@@ -4,15 +4,14 @@ import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.sql.DriverManager;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,19 +46,23 @@ public class JpaSpringConfiguration {
     @Bean(name = "hibernateEntityManagerFactory")
     public EntityManagerFactory hibernateEntityManagerFactory() {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+
+        Map<String, Object> jpaPropertyMap = new HashMap();
+        jpaPropertyMap.put("javax.persistence.schema-generation.database.action", "drop-and-create");
+
         LocalContainerEntityManagerFactoryBean entityManagerFactory =
-                getEntityManagerFactory(hibernateJpaVendorAdapter, "Hibernate_JPA");
+                getEntityManagerFactory(hibernateJpaVendorAdapter, "Hibernate_JPA", jpaPropertyMap);
         return entityManagerFactory.getObject();
     }
 
     @Lazy
-    @Bean
+    @Bean(name = "eclipseLinkEntityManagerFactory")
     public EntityManagerFactory eclipseLinkEntityManagerFactory() {
         EclipseLinkJpaVendorAdapter eclipseLinkJpaVendorAdapter = new EclipseLinkJpaVendorAdapter();
-        eclipseLinkJpaVendorAdapter.setGenerateDdl(true);
 
         Map<String, Object> jpaPropertyMap = new HashMap();
         jpaPropertyMap.put(PersistenceUnitProperties.WEAVING, "false");
+        jpaPropertyMap.put("javax.persistence.schema-generation.database.action", "drop-and-create");
 
         LocalContainerEntityManagerFactoryBean entityManagerFactory =
                 getEntityManagerFactory(eclipseLinkJpaVendorAdapter, "EclipseLink_JPA", jpaPropertyMap);
@@ -67,8 +70,19 @@ public class JpaSpringConfiguration {
         return entityManagerFactory.getObject();
     }
 
-    private LocalContainerEntityManagerFactoryBean getEntityManagerFactory(JpaVendorAdapter jpaVendorAdapter, String persistenceUnitName) {
-        return getEntityManagerFactory(jpaVendorAdapter, persistenceUnitName, null);
+    @Lazy
+    @Bean(name = "openJpaEntityManagerFactory")
+    public EntityManagerFactory openJpaEntityManagerFactory() {
+        OpenJpaVendorAdapter openJpaVendorAdapter = new OpenJpaVendorAdapter();
+
+        Map<String, Object> jpaPropertyMap = new HashMap();
+        jpaPropertyMap.put("openjpa.RuntimeUnenhancedClasses", "supported");
+        jpaPropertyMap.put("javax.persistence.schema-generation.database.action", "drop-and-create");
+        jpaPropertyMap.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(SchemaAction='dropDB,add')");
+
+        LocalContainerEntityManagerFactoryBean entityManagerFactory =
+                getEntityManagerFactory(openJpaVendorAdapter, "OpenJPA", jpaPropertyMap);
+        return entityManagerFactory.getObject();
     }
 
     private LocalContainerEntityManagerFactoryBean getEntityManagerFactory(JpaVendorAdapter jpaVendorAdapter,
