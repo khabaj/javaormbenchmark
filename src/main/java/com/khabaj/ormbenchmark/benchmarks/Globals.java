@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark;
+package com.khabaj.ormbenchmark.benchmarks;
 
 public class Globals {
     public static final int FORKS = 0;

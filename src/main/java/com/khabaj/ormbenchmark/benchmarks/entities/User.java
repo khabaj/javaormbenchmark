@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.entities;
+package com.khabaj.ormbenchmark.benchmarks.entities;
 
 import javax.persistence.*;
 

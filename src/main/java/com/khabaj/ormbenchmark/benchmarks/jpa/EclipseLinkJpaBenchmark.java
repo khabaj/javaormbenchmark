@@ -1,7 +1,8 @@
 package com.khabaj.ormbenchmark.benchmarks.jpa;
 
 
-import com.khabaj.ormbenchmark.config.JpaSpringConfiguration;
+import com.khabaj.ormbenchmark.benchmarks.config.JpaSpringConfiguration;
+import com.khabaj.ormbenchmark.benchmarks.config.JpaVendor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -12,6 +13,6 @@ public class EclipseLinkJpaBenchmark extends JpaBenchmark {
     @Override
     public void setUp() {
         ApplicationContext applicationContext = new AnnotationConfigApplicationContext(JpaSpringConfiguration.class);
-        this.entityManager = ((EntityManagerFactory) applicationContext.getBean("eclipseLinkEntityManagerFactory")).createEntityManager();
+        this.entityManager = applicationContext.getBean(EntityManagerFactory.class, JpaVendor.HIBERNATE).createEntityManager();
     }
 }

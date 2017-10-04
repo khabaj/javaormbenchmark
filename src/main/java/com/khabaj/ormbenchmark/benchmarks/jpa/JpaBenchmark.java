@@ -2,7 +2,7 @@ package com.khabaj.ormbenchmark.benchmarks.jpa;
 
 import com.khabaj.ormbenchmark.benchmarks.BaseBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.OrmBenchmark;
-import com.khabaj.ormbenchmark.entities.User;
+import com.khabaj.ormbenchmark.benchmarks.entities.User;
 import org.openjdk.jmh.annotations.*;
 
 import javax.persistence.EntityManager;

@@ -32,7 +32,7 @@ questions.
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Auto-generated JMH benchmark</name>
+    <name>Java ORM benchmark</name>
 
     <prerequisites>
         <maven>3.0</maven>
@@ -100,12 +100,25 @@ questions.
             <artifactId>openjpa</artifactId>
             <version>2.4.2</version>
         </dependency>
+
+        <!-- JavaFX components -->
+        <dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx</artifactId>
+            <version>8.9</version>
+        </dependency>
     </dependencies>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jmh.version>1.0</jmh.version>
-        <javac.target>1.6</javac.target>
+        <javac.target>1.8</javac.target>
         <uberjar.name>benchmarks</uberjar.name>
     </properties>
 
@@ -136,7 +149,7 @@ questions.
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <!--<mainClass>org.openjdk.jmh.Main</mainClass>-->
-                                    <mainClass>com.khabaj.ormbenchmark.Main</mainClass>
+                                    <mainClass>com.khabaj.ormbenchmark.launcher.Main</mainClass>
                                 </transformer>
                             </transformers>
                             <filters>

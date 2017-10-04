@@ -1,6 +1,5 @@
 package com.khabaj.ormbenchmark.benchmarks;
 
-import com.khabaj.ormbenchmark.Globals;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.concurrent.TimeUnit;
