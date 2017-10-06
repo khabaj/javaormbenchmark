@@ -3,20 +3,26 @@ package com.khabaj.ormbenchmark.benchmarks.jpa;
 import com.khabaj.ormbenchmark.benchmarks.BaseBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.OrmBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.entities.User;
-import org.openjdk.jmh.annotations.*;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.TearDown;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.persistence.EntityManager;
 
 public abstract class JpaBenchmark extends BaseBenchmark implements OrmBenchmark{
 
+    ConfigurableApplicationContext applicationContext;
     EntityManager entityManager;
 
     @Setup()
     public abstract void setUp() ;
 
     @TearDown
-    public void closeEntityManager() {
+    public void closeApplicationContext() {
         entityManager.close();
+        applicationContext.close();
     }
 
     @TearDown(Level.Invocation)
@@ -28,7 +34,7 @@ public abstract class JpaBenchmark extends BaseBenchmark implements OrmBenchmark
     }
 
     @Benchmark
-    //@Override
+    @Override
     public void insertOneRow() {
         User user = new User("John", "Stevens");
         entityManager.getTransaction().begin();

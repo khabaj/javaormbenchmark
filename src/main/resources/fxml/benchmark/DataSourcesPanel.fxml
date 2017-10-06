@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.controllers.benchmark.DataSourcesController">
+   <children>
+      <Label prefHeight="17.0" prefWidth="309.0" text="DATA SOURCES:">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Label>
+      <HBox prefHeight="14.0" prefWidth="480.0" spacing="5.0">
+         <children>
+            <JFXButton fx:id="addConnectionButton" onAction="#showAddConnectionForm" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: green;" text="Add" textFill="WHITE">
+               <graphic>
+                  <MaterialDesignIconView fill="WHITE" glyphName="PLUS" size="16" />
+               </graphic>
+            </JFXButton>
+            <JFXButton prefHeight="25.0" prefWidth="74.0" style="-fx-background-color: rgb(77,102,204);" text="Edit" textFill="WHITE">
+               <graphic>
+                  <MaterialDesignIconView fill="WHITE" glyphName="PENCIL" size="16" />
+               </graphic>
+            </JFXButton>
+            <JFXButton prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
+               <graphic>
+                  <MaterialDesignIconView fill="WHITE" glyphName="DELETE" size="16" />
+               </graphic>
+            </JFXButton>
+         </children>
+      </HBox>
+      <JFXTreeTableView prefHeight="233.0" prefWidth="428.0">
+         <columns>
+            <TreeTableColumn prefWidth="197.0" text="Name" />
+            <TreeTableColumn prefWidth="282.0" text="URL" />
+         </columns>
+         <columnResizePolicy>
+            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </JFXTreeTableView>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

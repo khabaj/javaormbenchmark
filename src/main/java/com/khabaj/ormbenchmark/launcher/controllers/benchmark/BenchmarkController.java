@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.launcher.controllers;
+package com.khabaj.ormbenchmark.launcher.controllers.benchmark;
 
 import com.khabaj.ormbenchmark.launcher.BenchmarkRunner;
 import javafx.application.Platform;
@@ -40,5 +40,10 @@ public class BenchmarkController implements Initializable{
 
         BenchmarkRunner benchmarkRunner = new BenchmarkRunner();
         benchmarkRunner.start();
+    }
+
+    @FXML
+    public void clearConsole() {
+        consoleTextArea.clear();
     }
 }

@@ -21,7 +21,7 @@ public class Main extends Application {
             BorderPane rootElement = loader.load();
 
             Scene scene = new Scene(rootElement, 600, 400);
-            scene.getStylesheets().add(Main.class.getResource("/fxml/styles.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("/fxml/styles.css").toExternalForm());
 
             primaryStage.setTitle("Java ORM Benchmark");
             primaryStage.setMinWidth(1200);
