@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="407.0" prefWidth="504.0" styleClass="background" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="418.0" prefWidth="504.0" styleClass="background" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSourceFormController">
    <children>
       <VBox layoutX="10.0" layoutY="20.0" prefHeight="434.0" prefWidth="504.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -64,17 +73,17 @@
                   <JFXTextField promptText="Connection URL" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <JFXTextField promptText="Username" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <JFXPasswordField promptText="Password" style="-fx-focus-color: nonde;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <JFXComboBox prefHeight="38.0" prefWidth="444.0" promptText="JDBC Driver" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <JFXComboBox fx:id="jdbcDriverComboBox" prefHeight="38.0" prefWidth="444.0" promptText="JDBC Driver" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
-            <HBox alignment="CENTER_RIGHT" prefHeight="33.0" prefWidth="464.0" spacing="10.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="464.0" spacing="10.0">
                <children>
-                  <JFXButton buttonType="RAISED" prefHeight="32.0" prefWidth="74.0" text="CANCEL" textFill="#bf1c1c">
+                  <JFXButton buttonType="RAISED" prefHeight="40.0" prefWidth="85.0" text="CANCEL" textFill="#bf1c1c">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: rgb(46,132,251);" text="SAVE" textFill="WHITE">
+                  <JFXButton buttonType="RAISED" prefHeight="41.0" prefWidth="114.0" style="-fx-background-color: rgb(46,132,251);" text="SAVE" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="12.0" />
                      </font>

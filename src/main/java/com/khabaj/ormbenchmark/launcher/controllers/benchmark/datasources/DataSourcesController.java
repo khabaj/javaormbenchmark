@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.launcher.controllers.benchmark;
+package com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
