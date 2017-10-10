@@ -4,8 +4,8 @@ public enum JDBCDriver {
     MYSQL("MySQL", "com.mysql.jdbc.Driver"),
     H2("H2", "org.h2.Driver");
 
-    private String name;
-    private String driver;
+    private final String name;
+    private final String driver;
 
     JDBCDriver(String name, String driver) {
         this.name = name;
@@ -19,9 +19,4 @@ public enum JDBCDriver {
     public String getDriver() {
         return driver;
     }
-
-    public String getFullText() {
-        return name + " - " + driver;
-    }
-
 }

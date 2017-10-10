@@ -1,3 +1,7 @@
 .background {
     -fx-background-color: white;
 }
+
+.tree-table-view .tree-table-cell {
+    -fx-padding: 10 0 10 0;
+}
