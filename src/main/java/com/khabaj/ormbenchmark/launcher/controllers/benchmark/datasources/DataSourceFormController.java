@@ -2,6 +2,7 @@ package com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
 import com.khabaj.ormbenchmark.launcher.controllers.benchmark.JDBCDriver;
@@ -11,9 +12,9 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -38,6 +39,8 @@ public class DataSourceFormController implements Initializable {
     JFXComboBox<JDBCDriver> jdbcDriverComboBox;
     @FXML
     Label connectionStatusLabel;
+    @FXML
+    Pane dataSourceForm;
 
     private DataSource dataSource;
 
@@ -127,18 +130,18 @@ public class DataSourceFormController implements Initializable {
             Class.forName(jdbcDriver.getDriver());
             connection = DriverManager.getConnection(connectionURL.getText(), username.getText(), password.getText());
             connectionSuccess = connection.isValid(1000);
-        } catch (Exception e) {
-
-        } finally {
             setConnectionStatusLabel(connectionSuccess);
-
+        } catch (Exception e) {
+            setConnectionStatusLabel(connectionSuccess);
+            JFXSnackbar bar = new JFXSnackbar(dataSourceForm);
+            bar.setPrefWidth(250);
+            bar.enqueue(new JFXSnackbar.SnackbarEvent(e.getMessage()));
+        } finally {
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText(e.toString());
-                    alert.showAndWait();
+                    e.printStackTrace();
                 }
             }
         }

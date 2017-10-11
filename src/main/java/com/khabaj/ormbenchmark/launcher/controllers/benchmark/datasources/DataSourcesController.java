@@ -84,6 +84,8 @@ public class DataSourcesController implements Initializable {
         TreeItem<DataSource> item = dataSourcesTable.getSelectionModel().getSelectedItem();
         if(item != null) {
             dataSources.remove(item.getValue());
+            if(dataSources.isEmpty())
+                dataSourcesTable.getSelectionModel().clearSelection();
         }
     }
 

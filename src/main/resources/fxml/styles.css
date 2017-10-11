@@ -5,3 +5,15 @@
 .tree-table-view .tree-table-cell {
     -fx-padding: 10 0 10 0;
 }
+
+.dialog-pane {
+    -fx-background-color: white;
+}
+
+.jfx-snackbar-content {
+    -fx-background-color: darkred;
+}
+
+.jfx-snackbar-toast {
+    -fx-text-fill: white;
+}
