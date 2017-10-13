@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class DataSourcesController implements Initializable {
+public class DataSourcesPanelCtrl implements Initializable {
 
     @FXML
     JFXTreeTableView<DataSource> dataSourcesTable;
@@ -66,7 +66,7 @@ public class DataSourcesController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/benchmark/DataSourceForm.fxml"));
         AnchorPane rootElement = loader.load();
 
-        DataSourceFormController dataSourceController = loader.getController();
+        DataSourceFormCtrl dataSourceController = loader.getController();
         dataSourceController.setParentForm(this);
         dataSourceController.setDataSource(dataSource);
 

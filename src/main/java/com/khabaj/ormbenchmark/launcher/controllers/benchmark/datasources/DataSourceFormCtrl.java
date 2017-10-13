@@ -23,10 +23,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class DataSourceFormController implements Initializable {
+public class DataSourceFormCtrl implements Initializable {
 
     @FXML
-    DataSourcesController dataSourcesController;
+    DataSourcesPanelCtrl dataSourcesPanelCtrl;
     @FXML
     JFXTextField connectionName;
     @FXML
@@ -79,8 +79,8 @@ public class DataSourceFormController implements Initializable {
         }
     }
 
-    public void setParentForm(DataSourcesController parent) {
-        dataSourcesController = parent;
+    public void setParentForm(DataSourcesPanelCtrl parent) {
+        dataSourcesPanelCtrl = parent;
     }
 
     public void setDataSource(DataSource dataSource) {
@@ -107,7 +107,7 @@ public class DataSourceFormController implements Initializable {
             dataSource.setUsername(username.getText());
             dataSource.setPassword(password.getText());
             dataSource.setJdbcDriver(jdbcDriverComboBox.getSelectionModel().getSelectedItem());
-            dataSourcesController.addDataSource(dataSource);
+            dataSourcesPanelCtrl.addDataSource(dataSource);
             Stage stage = (Stage) ((Control) event.getSource()).getScene().getWindow();
             stage.close();
         }

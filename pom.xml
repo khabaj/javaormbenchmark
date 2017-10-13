@@ -50,6 +50,11 @@ questions.
             <version>${jmh.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>RELEASE</version>
+        </dependency>
 
         <!-- Spring -->
         <dependency>

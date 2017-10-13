@@ -10,6 +10,7 @@ public class BenchmarkRunner extends Thread {
 
     public void run() {
         Options options = new OptionsBuilder()
+                .shouldDoGC(true)
                 .resultFormat(ResultFormatType.TEXT)
                 .build();
         try {

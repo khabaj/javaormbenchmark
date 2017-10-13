@@ -13,7 +13,7 @@ import java.io.PrintStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class BenchmarkController implements Initializable{
+public class BenchmarkTabCtrl implements Initializable{
 
     @FXML
     TextArea consoleTextArea;
