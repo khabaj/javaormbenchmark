@@ -122,28 +122,20 @@ public class DataSourceFormCtrl implements Initializable {
     @FXML
     private void testConnection() {
 
-        Connection connection = null;
-        boolean connectionSuccess = false;
+        DataSourceService dataSourceService = DataSourceService.getInstance();
         JDBCDriver jdbcDriver = jdbcDriverComboBox.getSelectionModel().getSelectedItem();
+        boolean connectionSuccess = false;
 
         try {
-            Class.forName(jdbcDriver.getDriver());
-            connection = DriverManager.getConnection(connectionURL.getText(), username.getText(), password.getText());
-            connectionSuccess = connection.isValid(1000);
-            setConnectionStatusLabel(connectionSuccess);
+            connectionSuccess = dataSourceService.testConnection(
+                    new DataSource(connectionName.getText(), connectionURL.getText(),
+                            username.getText(), password.getText(), jdbcDriver));
         } catch (Exception e) {
-            setConnectionStatusLabel(connectionSuccess);
             JFXSnackbar bar = new JFXSnackbar(dataSourceForm);
             bar.setPrefWidth(250);
             bar.enqueue(new JFXSnackbar.SnackbarEvent(e.getMessage()));
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            setConnectionStatusLabel(connectionSuccess);
         }
     }
 

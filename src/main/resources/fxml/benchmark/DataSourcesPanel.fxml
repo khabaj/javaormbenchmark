@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <VBox spacing="10.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSourcesPanelCtrl">
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -19,17 +20,17 @@
       </font>
    </Label>
    <HBox prefHeight="14.0" prefWidth="480.0" spacing="5.0">
-      <JFXButton onAction="#showAddDataSourceForm" prefHeight="25.0" prefWidth="82.0" style="-fx-background-color: green;" text="Add" textFill="WHITE">
+      <JFXButton onAction="#showAddDataSourceForm" style="-fx-background-color: green;" text="Add" textFill="WHITE">
          <graphic>
             <MaterialDesignIconView fill="WHITE" glyphName="PLUS" size="16" />
          </graphic>
       </JFXButton>
-      <JFXButton onAction="#showEditDataSourceForm" prefHeight="25.0" prefWidth="74.0" style="-fx-background-color: rgb(77,102,204);" text="Edit" textFill="WHITE">
+      <JFXButton onAction="#showEditDataSourceForm" style="-fx-background-color: rgb(77,102,204);" text="Edit" textFill="WHITE">
          <graphic>
             <MaterialDesignIconView fill="WHITE" glyphName="PENCIL" size="16" />
          </graphic>
       </JFXButton>
-      <JFXButton onAction="#deleteDataSource" prefHeight="25.0" prefWidth="76.0" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
+      <JFXButton onAction="#deleteDataSource" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
          <graphic>
             <MaterialDesignIconView fill="WHITE" glyphName="DELETE" size="16" />
          </graphic>

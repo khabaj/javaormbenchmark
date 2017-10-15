@@ -2,6 +2,8 @@ package com.khabaj.ormbenchmark.launcher.controllers.benchmark.settings;
 
 import com.jfoenix.controls.JFXTreeView;
 import com.khabaj.ormbenchmark.benchmarks.OrmBenchmark;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBoxTreeItem;
@@ -58,17 +60,17 @@ public class BenchmarkSettingsCtrl implements Initializable {
         for (Method method : benchmarkMethods) {
             List<TreeItem<String>> list = benchmarkClasses
                     .stream()
-                    .map(clazz -> new TreeItem<>(clazz.getSimpleName()))
+                    .map(clazz -> new CheckBoxTreeItem<>(clazz.getSimpleName()))
                     .collect(Collectors.toList());
 
             CheckBoxTreeItem<String> benchmarkItem = new CheckBoxTreeItem<>(method.getName());
             benchmarkItem.getChildren().addAll(list);
             benchmarkItem.setExpanded(true);
-
+            benchmarkItem.setIndependent(false);
             rootItem.getChildren().add(benchmarkItem);
         }
 
-        banchmarksTreeView.setCellFactory(CheckBoxTreeCell.forTreeView());
+        banchmarksTreeView.setCellFactory(CheckBoxTreeCell.<String>forTreeView());
         banchmarksTreeView.setRoot(rootItem);
         banchmarksTreeView.setShowRoot(false);
     }

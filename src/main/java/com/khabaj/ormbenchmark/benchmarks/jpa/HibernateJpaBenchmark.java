@@ -10,7 +10,6 @@ public class HibernateJpaBenchmark extends JpaBenchmark {
 
     @Override
     public void setUp() {
-        this.applicationContext = new AnnotationConfigApplicationContext(JpaSpringConfiguration.class);
-        this.entityManager = applicationContext.getBean(EntityManagerFactory.class, JpaVendor.HIBERNATE).createEntityManager();
+        init(JpaVendor.HIBERNATE);
     }
 }

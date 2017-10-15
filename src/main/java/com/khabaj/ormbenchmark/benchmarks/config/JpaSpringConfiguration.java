@@ -1,9 +1,13 @@
 package com.khabaj.ormbenchmark.benchmarks.config;
 
+import com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSourceService;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
@@ -34,10 +38,21 @@ public class JpaSpringConfiguration {
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl(dbUrl);
-        dataSource.setDriverClassName(jdbcDriver);
-        dataSource.setUsername(dbUserName);
-        dataSource.setPassword(dbPassword);
+
+        DataSourceService dataSourceService = DataSourceService.getInstance();
+        com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSource activeDataSource =
+                dataSourceService.getActiveDataSource();
+        if (activeDataSource != null) {
+            dataSource.setUrl(activeDataSource.getConnectionURL());
+            dataSource.setDriverClassName(activeDataSource.getJdbcDriver().getDriver());
+            dataSource.setUsername(activeDataSource.getUsername());
+            dataSource.setPassword(activeDataSource.getPassword());
+        } else {
+            dataSource.setUrl(dbUrl);
+            dataSource.setDriverClassName(jdbcDriver);
+            dataSource.setUsername(dbUserName);
+            dataSource.setPassword(dbPassword);
+        }
         return dataSource;
     }
 

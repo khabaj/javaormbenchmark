@@ -24,8 +24,7 @@ public class DataSourcesPanelCtrl implements Initializable {
 
     @FXML
     JFXTreeTableView<DataSource> dataSourcesTable;
-
-    private ObservableList<DataSource> dataSources;
+    private DataSourceService dataSourceService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,11 +37,11 @@ public class DataSourcesPanelCtrl implements Initializable {
         TreeTableColumn<DataSource, JDBCDriver> jdbcDriverColumn = new TreeTableColumn<>("JDBC Driver");
         jdbcDriverColumn.setCellValueFactory(param -> param.getValue().getValue().jdbcDriverProperty());
 
-        dataSources = FXCollections.observableArrayList();
-        dataSources.add(new DataSource("MySQL", "jdbc:mysql://localhost:3306/ormbenchmarkdb?createDatabaseIfNotExist=true", JDBCDriver.MYSQL));
-        dataSources.add(new DataSource("H2", "http:fdsfsgfdgfd", JDBCDriver.H2));
+        dataSourceService = DataSourceService.getInstance();
+        dataSourceService.addDataSource(new DataSource("MySQL", "jdbc:mysql://localhost:3306/ormbenchmarkdb?createDatabaseIfNotExist=true","root", JDBCDriver.MYSQL));
+        dataSourceService.addDataSource(new DataSource("H2 (In-memory)", "jdbc:h2:mem:ormbenchmarkdb", JDBCDriver.H2));
 
-        TreeItem<DataSource> root = new RecursiveTreeItem<>(dataSources, RecursiveTreeObject::getChildren);
+        TreeItem<DataSource> root = new RecursiveTreeItem<>(dataSourceService.getDataSources(), RecursiveTreeObject::getChildren);
         dataSourcesTable.getColumns().setAll(connectionNameColumn, connectionURLColumn, jdbcDriverColumn);
         dataSourcesTable.setRoot(root);
         dataSourcesTable.setShowRoot(false);
@@ -62,7 +61,7 @@ public class DataSourcesPanelCtrl implements Initializable {
         }
     }
 
-    public void showDataSourceForm(String windowTitle, DataSource dataSource) throws IOException {
+    private void showDataSourceForm(String windowTitle, DataSource dataSource) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/benchmark/DataSourceForm.fxml"));
         AnchorPane rootElement = loader.load();
 
@@ -83,8 +82,8 @@ public class DataSourcesPanelCtrl implements Initializable {
     public void deleteDataSource() {
         TreeItem<DataSource> item = dataSourcesTable.getSelectionModel().getSelectedItem();
         if(item != null) {
-            dataSources.remove(item.getValue());
-            if(dataSources.isEmpty())
+            dataSourceService.deleteDataSource(item.getValue());
+            if(dataSourceService.getDataSources().isEmpty())
                 dataSourcesTable.getSelectionModel().clearSelection();
         }
     }
@@ -94,10 +93,10 @@ public class DataSourcesPanelCtrl implements Initializable {
         if(item != null) {
             DataSource selectedDataSource = item.getValue();
             if(selectedDataSource != dataSource) {
-                dataSources.add(dataSource);
+                dataSourceService.addDataSource(dataSource);
             }
         } else {
-            dataSources.add(dataSource);
+            dataSourceService.addDataSource(dataSource);
         }
     }
 }

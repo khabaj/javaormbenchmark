@@ -2,22 +2,38 @@ package com.khabaj.ormbenchmark.benchmarks.jpa;
 
 import com.khabaj.ormbenchmark.benchmarks.BaseBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.OrmBenchmark;
+import com.khabaj.ormbenchmark.benchmarks.config.JpaSpringConfiguration;
+import com.khabaj.ormbenchmark.benchmarks.config.JpaVendor;
 import com.khabaj.ormbenchmark.benchmarks.entities.User;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.TearDown;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
-public abstract class JpaBenchmark extends BaseBenchmark implements OrmBenchmark{
+public abstract class JpaBenchmark extends BaseBenchmark implements OrmBenchmark {
 
     ConfigurableApplicationContext applicationContext;
     EntityManager entityManager;
+    User user;
+
+    public void init(JpaVendor jpaVendor) {
+        try {
+            this.applicationContext = new AnnotationConfigApplicationContext(JpaSpringConfiguration.class);
+            this.entityManager = applicationContext.getBean(EntityManagerFactory.class, jpaVendor).createEntityManager();
+        } catch (Exception e) {
+            if(applicationContext != null) {
+                applicationContext.close();
+            }
+        }
+    }
 
     @Setup()
-    public abstract void setUp() ;
+    public abstract void setUp();
 
     @TearDown
     public void closeApplicationContext() {

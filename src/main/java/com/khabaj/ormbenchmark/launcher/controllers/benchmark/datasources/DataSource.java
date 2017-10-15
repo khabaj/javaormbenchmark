@@ -24,6 +24,10 @@ public class DataSource extends RecursiveTreeObject<DataSource> {
         this(connectionName, connectionURL, null, null, jdbcDriver);
     }
 
+    public DataSource(String connectionName, String connectionURL, String username, JDBCDriver jdbcDriver) {
+        this(connectionName, connectionURL, username, null, jdbcDriver);
+    }
+
     public DataSource(String connectionName, String connectionURL, String username, String password, JDBCDriver jdbcDriver) {
         this.connectionName = new SimpleStringProperty(connectionName);
         this.connectionURL = new SimpleStringProperty(connectionURL);
