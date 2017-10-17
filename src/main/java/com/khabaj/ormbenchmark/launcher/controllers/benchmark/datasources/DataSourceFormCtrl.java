@@ -18,9 +18,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DataSourceFormCtrl implements Initializable {
@@ -49,9 +46,7 @@ public class DataSourceFormCtrl implements Initializable {
 
         dataSource = new DataSource();
 
-        for (JDBCDriver jdbcDriver : JDBCDriver.values()) {
-            jdbcDriverComboBox.getItems().add(jdbcDriver);
-        }
+        jdbcDriverComboBox.getItems().addAll(JDBCDriver.values());
         jdbcDriverComboBox.getSelectionModel().selectFirst();
         prepareValidators();
     }

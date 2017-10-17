@@ -17,9 +17,8 @@ import javax.persistence.EntityManagerFactory;
 
 public abstract class JpaBenchmark extends BaseBenchmark implements OrmBenchmark {
 
-    ConfigurableApplicationContext applicationContext;
-    EntityManager entityManager;
-    User user;
+    private ConfigurableApplicationContext applicationContext;
+    private EntityManager entityManager;
 
     public void init(JpaVendor jpaVendor) {
         try {

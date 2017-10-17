@@ -1,14 +1,8 @@
 package com.khabaj.ormbenchmark.benchmarks;
 
-import org.openjdk.jmh.annotations.*;
-
-import java.util.concurrent.TimeUnit;
+import org.openjdk.jmh.annotations.Scope;
+import org.openjdk.jmh.annotations.State;
 
 @State(Scope.Benchmark)
-@Fork(Globals.FORKS)
-@BenchmarkMode(Mode.AverageTime)
-@Measurement(iterations = Globals.MEASUREMENT_ITERATIONS)
-@Warmup(iterations = Globals.WARMUP_ITERATIONS)
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
 public abstract class BaseBenchmark {
 }

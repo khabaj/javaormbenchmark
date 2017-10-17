@@ -1,11 +1,12 @@
 package com.khabaj.ormbenchmark.launcher.controllers.benchmark;
 
 import com.khabaj.ormbenchmark.launcher.BenchmarkRunner;
+import com.khabaj.ormbenchmark.launcher.controllers.benchmark.settings.BenchmarkSettings;
+import com.khabaj.ormbenchmark.launcher.controllers.benchmark.settings.BenchmarkSettingsCtrl;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
-import org.openjdk.jmh.runner.RunnerException;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,9 +37,12 @@ public class BenchmarkTabCtrl implements Initializable{
     }
 
     @FXML
-    public void startBenchmark() throws RunnerException {
+    public void startBenchmark() {
 
-        BenchmarkRunner benchmarkRunner = new BenchmarkRunner();
+        BenchmarkSettingsCtrl ctrl = BenchmarkSettingsCtrl.getController();
+        BenchmarkSettings benchmarkSettings = ctrl.getBenchmarkSettings();
+
+        BenchmarkRunner benchmarkRunner = new BenchmarkRunner(benchmarkSettings);
         benchmarkRunner.start();
     }
 
