@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.launcher.controllers.benchmark.settings;
+package com.khabaj.ormbenchmark.launcher.benchmark.settings;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;

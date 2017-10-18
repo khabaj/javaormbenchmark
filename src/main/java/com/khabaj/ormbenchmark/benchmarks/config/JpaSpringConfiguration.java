@@ -1,6 +1,6 @@
 package com.khabaj.ormbenchmark.benchmarks.config;
 
-import com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSourceService;
+import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSourceService;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +40,7 @@ public class JpaSpringConfiguration {
         BasicDataSource dataSource = new BasicDataSource();
 
         DataSourceService dataSourceService = DataSourceService.getInstance();
-        com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSource activeDataSource =
+        com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSource activeDataSource =
                 dataSourceService.getActiveDataSource();
         if (activeDataSource != null) {
             dataSource.setUrl(activeDataSource.getConnectionURL());

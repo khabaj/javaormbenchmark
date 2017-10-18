@@ -1,12 +1,15 @@
 package com.khabaj.ormbenchmark.launcher;
 
-import com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSource;
-import com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSourceService;
-import com.khabaj.ormbenchmark.launcher.controllers.benchmark.settings.BenchmarkSettings;
+import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSource;
+import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSourceService;
+import com.khabaj.ormbenchmark.launcher.benchmark.settings.BenchmarkSettings;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -31,15 +34,16 @@ public class BenchmarkRunner extends Thread {
             options.include(benchmark);
         }
 
-        options.resultFormat(ResultFormatType.TEXT);
+        options.resultFormat(ResultFormatType.JSON);
 
         DataSourceService dataSourceService = DataSourceService.getInstance();
         List<DataSource> dataSources = dataSourceService.getDataSources();
 
-        String benchmarkDT = getCurrentDTString();
+        String resultsDirectoryPath = "./benchmark_results/" + getCurrentDTString();
+        createResultsDirectories(resultsDirectoryPath);
 
         for (DataSource dataSource : dataSources) {
-            String resultFileName = prepareResultFileName(dataSource.getConnectionName(), benchmarkDT);
+            String resultFileName = prepareResultFileName(resultsDirectoryPath + "/" + dataSource.getConnectionName());
             options.result(resultFileName);
 
             try {
@@ -52,6 +56,17 @@ public class BenchmarkRunner extends Thread {
                         + e.getMessage());
             }
         }
+
+
+    }
+
+    private void createResultsDirectories(String resultsDirectoryPath) {
+
+        try {
+            Files.createDirectories(Paths.get(resultsDirectoryPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String getCurrentDTString() {
@@ -59,7 +74,7 @@ public class BenchmarkRunner extends Thread {
         return LocalDateTime.now().format(dateFormatter);
     }
 
-    private String prepareResultFileName(String dataSourceName, String benchmarkDT) {
-        return dataSourceName + "_Benchmark_" + benchmarkDT + ".out";
+    private String prepareResultFileName(String dataSourceName) {
+        return dataSourceName + ".json";
     }
 }

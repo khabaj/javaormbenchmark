@@ -1,6 +1,6 @@
-package com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources;
+package com.khabaj.ormbenchmark.launcher.benchmark.datasources;
 
-import com.khabaj.ormbenchmark.launcher.controllers.benchmark.JDBCDriver;
+import com.khabaj.ormbenchmark.launcher.benchmark.JDBCDriver;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.launcher.controllers.benchmark;
+package com.khabaj.ormbenchmark.launcher.benchmark;
 
 public enum JDBCDriver {
     MYSQL("MySQL", "com.mysql.jdbc.Driver"),

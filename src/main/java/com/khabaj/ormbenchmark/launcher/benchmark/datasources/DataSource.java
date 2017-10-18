@@ -1,8 +1,11 @@
-package com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources;
+package com.khabaj.ormbenchmark.launcher.benchmark.datasources;
 
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.khabaj.ormbenchmark.launcher.controllers.benchmark.JDBCDriver;
-import javafx.beans.property.*;
+import com.khabaj.ormbenchmark.launcher.benchmark.JDBCDriver;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class DataSource extends RecursiveTreeObject<DataSource> {
 

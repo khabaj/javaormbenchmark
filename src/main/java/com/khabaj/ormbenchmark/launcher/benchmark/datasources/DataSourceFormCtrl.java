@@ -1,11 +1,11 @@
-package com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources;
+package com.khabaj.ormbenchmark.launcher.benchmark.datasources;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.validation.RequiredFieldValidator;
-import com.khabaj.ormbenchmark.launcher.controllers.benchmark.JDBCDriver;
+import com.khabaj.ormbenchmark.launcher.benchmark.JDBCDriver;
 import de.jensd.fx.glyphs.GlyphsBuilder;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;

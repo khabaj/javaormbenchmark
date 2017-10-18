@@ -1,9 +1,9 @@
-package com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources;
+package com.khabaj.ormbenchmark.launcher.benchmark.datasources;
 
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import com.khabaj.ormbenchmark.launcher.controllers.benchmark.JDBCDriver;
+import com.khabaj.ormbenchmark.launcher.benchmark.JDBCDriver;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

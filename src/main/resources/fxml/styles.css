@@ -17,3 +17,7 @@
 .jfx-snackbar-toast {
     -fx-text-fill: white;
 }
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: slategray;
+}

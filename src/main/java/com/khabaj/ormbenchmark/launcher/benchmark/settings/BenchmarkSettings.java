@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.launcher.controllers.benchmark.settings;
+package com.khabaj.ormbenchmark.launcher.benchmark.settings;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;

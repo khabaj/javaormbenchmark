@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
-<VBox spacing="10.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.controllers.benchmark.datasources.DataSourcesPanelCtrl">
+<VBox spacing="10.0" stylesheets="@../styles.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSourcesPanelCtrl">
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
    </padding>
@@ -30,7 +29,7 @@
             <MaterialDesignIconView fill="WHITE" glyphName="PENCIL" size="16" />
          </graphic>
       </JFXButton>
-      <JFXButton onAction="#deleteDataSource" style="-fx-background-color: red;" text="Delete" textFill="WHITE">
+      <JFXButton onAction="#deleteDataSource" style="-fx-background-color: darkred;" text="Delete" textFill="WHITE">
          <graphic>
             <MaterialDesignIconView fill="WHITE" glyphName="DELETE" size="16" />
          </graphic>
