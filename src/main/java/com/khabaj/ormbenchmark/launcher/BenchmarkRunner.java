@@ -50,7 +50,7 @@ public class BenchmarkRunner extends Thread {
 
             try {
                 dataSourceService.testConnection(dataSource);
-                dataSourceService.setActiveDataSource(dataSource);
+                dataSourceService.saveActiveDataSourceProperties(dataSource);
                 new Runner(options).run();
                 System.gc();
             } catch (Exception e) {

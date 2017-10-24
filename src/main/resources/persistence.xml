@@ -6,5 +6,6 @@
     <persistence-unit name="openjpa">
         <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
         <class>com.khabaj.ormbenchmark.benchmarks.entities.User</class>
+        <class>com.khabaj.ormbenchmark.benchmarks.entities.Phone</class>
     </persistence-unit>
 </persistence>

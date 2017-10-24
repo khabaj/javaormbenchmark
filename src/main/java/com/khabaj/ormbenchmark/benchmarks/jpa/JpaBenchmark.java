@@ -59,32 +59,44 @@ public abstract class JpaBenchmark extends BaseBenchmark implements OrmBenchmark
         entityManager.getTransaction().commit();
     }
 
-//    @Benchmark
-//    @Override
-//    public void insert100Rows() {
-//        entityManager.getTransaction().begin();
-//        for (int i = 0; i<100; i++) {
-//            entityManager.persist(new User("John" + i, "LastName" + i));
-//        }
-//        entityManager.getTransaction().commit();
-//    }
-//
-//    @Benchmark
-//    //@Override
-//    public void insert10000Rows() {
-//        entityManager.getTransaction().begin();
-//        for (int i = 0; i<10000; i++) {
-//
-//            if ( i > 0 && i % 5000 == 0 ) {
-//                entityManager.flush();
-//                entityManager.clear();
-//
-//                entityManager.getTransaction().commit();
-//                entityManager.getTransaction().begin();
-//            }
-//            entityManager.persist(new User("John" + i, "LastName" + i));
-//        }
-//        entityManager.getTransaction().commit();
-//    }
+    @Benchmark
+    @Override
+    public void insert100Rows() {
+        entityManager.getTransaction().begin();
+        for (int i = 0; i<100; i++) {
+            entityManager.persist(new User("John" + i, "LastName" + i));
+        }
+        entityManager.getTransaction().commit();
+    }
+
+    @Benchmark
+    @Override
+    public void insert10000Rows() {
+        entityManager.getTransaction().begin();
+        performBatchInsert(10000, 5000);
+        entityManager.getTransaction().commit();
+    }
+
+    @Benchmark
+    @Override
+    public void insert100000Rows() {
+        entityManager.getTransaction().begin();
+        performBatchInsert(100000, 5000);
+        entityManager.getTransaction().commit();
+    }
+
+    private void performBatchInsert(int rowsNumber, int batchSize) {
+        for (int i = 0; i<rowsNumber; i++) {
+
+            if ( i > 0 && i % batchSize == 0 ) {
+                entityManager.flush();
+                entityManager.clear();
+
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
+            }
+            entityManager.persist(new User("John" + i, "LastName" + i));
+        }
+    }
 
 }

@@ -1,6 +1,5 @@
 package com.khabaj.ormbenchmark.benchmarks.config;
 
-import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSourceService;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@PropertySource("classpath:data_source.properties")
+@PropertySource("file:active_datasource.properties")
 public class JpaSpringConfiguration {
 
     @Value("${datasource.url:jdbc:h2:mem:ormbenchmarkdb}")
@@ -38,21 +37,10 @@ public class JpaSpringConfiguration {
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-
-        DataSourceService dataSourceService = DataSourceService.getInstance();
-        com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSource activeDataSource =
-                dataSourceService.getActiveDataSource();
-        if (activeDataSource != null) {
-            dataSource.setUrl(activeDataSource.getConnectionURL());
-            dataSource.setDriverClassName(activeDataSource.getJdbcDriver().getDriver());
-            dataSource.setUsername(activeDataSource.getUsername());
-            dataSource.setPassword(activeDataSource.getPassword());
-        } else {
-            dataSource.setUrl(dbUrl);
-            dataSource.setDriverClassName(jdbcDriver);
-            dataSource.setUsername(dbUserName);
-            dataSource.setPassword(dbPassword);
-        }
+        dataSource.setUrl(dbUrl);
+        dataSource.setDriverClassName(jdbcDriver);
+        dataSource.setUsername(dbUserName);
+        dataSource.setPassword(dbPassword);
         return dataSource;
     }
 
