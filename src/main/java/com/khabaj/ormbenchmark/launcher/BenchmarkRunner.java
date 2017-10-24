@@ -3,6 +3,8 @@ package com.khabaj.ormbenchmark.launcher;
 import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSource;
 import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSourceService;
 import com.khabaj.ormbenchmark.launcher.benchmark.settings.BenchmarkSettings;
+import com.khabaj.ormbenchmark.launcher.results.ResultsTabCtrl;
+import javafx.application.Platform;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -57,7 +59,10 @@ public class BenchmarkRunner extends Thread {
             }
         }
 
-
+        Platform.runLater(() -> {
+            ResultsTabCtrl resultsTabCtrl = ResultsTabCtrl.getInstance();
+            resultsTabCtrl.loadResults(resultsDirectoryPath);
+        });
     }
 
     private void createResultsDirectories(String resultsDirectoryPath) {

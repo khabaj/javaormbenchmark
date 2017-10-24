@@ -28,11 +28,13 @@ public abstract class JpaBenchmark extends BaseBenchmark implements OrmBenchmark
             if(applicationContext != null) {
                 applicationContext.close();
             }
+            System.out.println(e.getMessage());
         }
     }
 
     @Setup()
     public abstract void setUp();
+
 
     @TearDown
     public void closeApplicationContext() {
