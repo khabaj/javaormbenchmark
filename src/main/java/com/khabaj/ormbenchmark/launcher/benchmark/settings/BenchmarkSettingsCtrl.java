@@ -3,7 +3,8 @@ package com.khabaj.ormbenchmark.launcher.benchmark.settings;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
-import com.khabaj.ormbenchmark.benchmarks.OrmBenchmark;
+import com.khabaj.ormbenchmark.benchmarks.CreateBenchmark;
+import com.khabaj.ormbenchmark.benchmarks.PersistenceBenchmark;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -79,10 +80,10 @@ public class BenchmarkSettingsCtrl implements Initializable {
 
         Reflections reflections = new Reflections(configurationBuilder);
 
-        Method[] benchmarkMethods = OrmBenchmark.class.getDeclaredMethods();
-        Set<Class<? extends OrmBenchmark>> benchmarkClasses = reflections.getSubTypesOf(OrmBenchmark.class);
+        Method[] benchmarkMethods = CreateBenchmark.class.getDeclaredMethods();
+        Set<Class<? extends PersistenceBenchmark>> subtypes = reflections.getSubTypesOf(PersistenceBenchmark.class);
 
-        benchmarkClasses = benchmarkClasses.stream()
+        Set<Class<? extends PersistenceBenchmark>> benchmarkClasses = subtypes.stream()
                 .filter(el -> !Modifier.isAbstract(el.getModifiers()))
                 .filter(el -> !Modifier.isInterface(el.getModifiers()))
                 .collect(Collectors.toSet());
@@ -90,7 +91,7 @@ public class BenchmarkSettingsCtrl implements Initializable {
         buildBenchmarksTree(benchmarkMethods, benchmarkClasses);
     }
 
-    private void buildBenchmarksTree(Method[] benchmarkMethods, Set<Class<? extends OrmBenchmark>> benchmarkClasses) {
+    private void buildBenchmarksTree(Method[] benchmarkMethods, Set<Class<? extends PersistenceBenchmark>> benchmarkClasses) {
 
         CheckBoxTreeItem<String> rootItem = new CheckBoxTreeItem<>();
         rootItem.setExpanded(true);

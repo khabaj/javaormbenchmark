@@ -56,8 +56,8 @@ public class BenchmarkTabCtrl implements Initializable{
 
     @FXML
     public void stopBenchmark() {
-        benchmarkRunner.interrupt();
-        startBenchmarkButton.setDisable(false);
+        //unsafe
+        benchmarkRunner.stop();
     }
 
     @FXML

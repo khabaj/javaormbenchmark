@@ -1,72 +1,103 @@
 package com.khabaj.ormbenchmark.launcher.results;
 
-public class Result {
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
-    private String operation;
-    private String persistenceProvider;
-    private String database;
-    private Double score;
-    private Double scoreError;
-    private String scoreUnit;
+public class Result extends RecursiveTreeObject<Result> {
+
+    private StringProperty operation;
+    private StringProperty persistenceProvider;
+    private StringProperty database;
+    private DoubleProperty score;
+    private DoubleProperty scoreError;
+    private StringProperty scoreUnit;
 
     public Result() {
+        this("","","",0d,0d,"");
     }
 
     public Result(String operation, String persistenceProvider, String database, Double score, Double scoreError, String scoreUnit) {
-        this.operation = operation;
-        this.persistenceProvider = persistenceProvider;
-        this.database = database;
-        this.score = score;
-        this.scoreError = scoreError;
-        this.scoreUnit = scoreUnit;
+        this.operation = new SimpleStringProperty(operation);
+        this.persistenceProvider = new SimpleStringProperty(persistenceProvider);
+        this.database = new SimpleStringProperty(database);
+        this.score = new SimpleDoubleProperty(score);
+        this.scoreError = new SimpleDoubleProperty(scoreError);
+        this.scoreUnit = new SimpleStringProperty(scoreUnit);
     }
 
     public String getOperation() {
+        return operation.get();
+    }
+
+    public StringProperty operationProperty() {
         return operation;
     }
 
     public void setOperation(String operation) {
-        this.operation = operation;
+        this.operation.set(operation);
     }
 
     public String getPersistenceProvider() {
+        return persistenceProvider.get();
+    }
+
+    public StringProperty persistenceProviderProperty() {
         return persistenceProvider;
     }
 
     public void setPersistenceProvider(String persistenceProvider) {
-        this.persistenceProvider = persistenceProvider;
+        this.persistenceProvider.set(persistenceProvider);
     }
 
     public String getDatabase() {
+        return database.get();
+    }
+
+    public StringProperty databaseProperty() {
         return database;
     }
 
     public void setDatabase(String database) {
-        this.database = database;
+        this.database.set(database);
     }
 
     public Double getScore() {
+        return score.get();
+    }
+
+    public DoubleProperty scoreProperty() {
         return score;
     }
 
     public void setScore(Double score) {
-        this.score = score;
+        this.score.set(score);
+    }
+
+    public Double getScoreError() {
+        return scoreError.get();
+    }
+
+    public DoubleProperty scoreErrorProperty() {
+        return scoreError;
+    }
+
+    public void setScoreError(double scoreError) {
+        this.scoreError.set(scoreError);
     }
 
     public String getScoreUnit() {
+        return scoreUnit.get();
+    }
+
+    public StringProperty scoreUnitProperty() {
         return scoreUnit;
     }
 
     public void setScoreUnit(String scoreUnit) {
-        this.scoreUnit = scoreUnit;
-    }
-
-    public Double getScoreError() {
-        return scoreError;
-    }
-
-    public void setScoreError(Double scoreError) {
-        this.scoreError = scoreError;
+        this.scoreUnit.set(scoreUnit);
     }
 
     @Override
@@ -76,23 +107,18 @@ public class Result {
 
         Result result = (Result) o;
 
-        if (operation != null ? !operation.equals(result.operation) : result.operation != null) return false;
-        if (persistenceProvider != null ? !persistenceProvider.equals(result.persistenceProvider) : result.persistenceProvider != null)
+        if (getOperation() != null ? !getOperation().equals(result.getOperation()) : result.getOperation() != null)
             return false;
-        if (database != null ? !database.equals(result.database) : result.database != null) return false;
-        if (score != null ? !score.equals(result.score) : result.score != null) return false;
-        if (scoreError != null ? !scoreError.equals(result.scoreError) : result.scoreError != null) return false;
-        return scoreUnit != null ? scoreUnit.equals(result.scoreUnit) : result.scoreUnit == null;
+        if (getPersistenceProvider() != null ? !getPersistenceProvider().equals(result.getPersistenceProvider()) : result.getPersistenceProvider() != null)
+            return false;
+        return getDatabase() != null ? getDatabase().equals(result.getDatabase()) : result.getDatabase() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = operation != null ? operation.hashCode() : 0;
-        result = 31 * result + (persistenceProvider != null ? persistenceProvider.hashCode() : 0);
-        result = 31 * result + (database != null ? database.hashCode() : 0);
-        result = 31 * result + (score != null ? score.hashCode() : 0);
-        result = 31 * result + (scoreError != null ? scoreError.hashCode() : 0);
-        result = 31 * result + (scoreUnit != null ? scoreUnit.hashCode() : 0);
+        int result = getOperation() != null ? getOperation().hashCode() : 0;
+        result = 31 * result + (getPersistenceProvider() != null ? getPersistenceProvider().hashCode() : 0);
+        result = 31 * result + (getDatabase() != null ? getDatabase().hashCode() : 0);
         return result;
     }
 }

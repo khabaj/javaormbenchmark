@@ -1,56 +1,83 @@
 package com.khabaj.ormbenchmark.launcher.results;
 
-import com.jfoenix.controls.JFXTreeView;
+import com.jfoenix.controls.JFXListView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TreeItem;
+import org.apache.commons.lang.StringUtils;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ResultsMenuCtrl implements Initializable {
 
+    private final String RESULTS_DIRECTORY = "./benchmark_results/";
     @FXML
-    JFXTreeView<String> resultsMenuTreeView;
-
-    ResultsService resultsService;
+    JFXListView<String> groupResultsListView;
+    @FXML
+    JFXListView<String> resultsDirectoriesListView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.resultsService = ResultsService.getInstance();
-        resultsMenuTreeView.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> showResults(newValue));
 
         refreshMenu();
+
+        groupResultsListView.getSelectionModel().selectedItemProperty()
+                .addListener((obs, oldValue, newValue) -> groupTableByColumn(newValue));
+
+        resultsDirectoriesListView.getSelectionModel().selectedItemProperty()
+                .addListener((obs, oldValue, newValue) -> showResults(newValue));
     }
 
     public void refreshMenu() {
-        TreeItem<String> rootItem = new TreeItem<>();
-        rootItem.setExpanded(true);
-        resultsMenuTreeView.setRoot(rootItem);
-        resultsMenuTreeView.setShowRoot(false);
-
-        TreeItem<String> operationsItem = new TreeItem<>(MenuCategory.OPERATIONS);
-        Set<String> operations = resultsService.getOperations();
-        operations.forEach((operation) -> operationsItem.getChildren().add(new TreeItem<>(operation)));
-
-        TreeItem<String> persistenceProvidersItem = new TreeItem<>(MenuCategory.PERSISTENCE_PROVIDERS);
-        Set<String> persistenceProviders = resultsService.getPersistenceProviders();
-        persistenceProviders.forEach((persistenceProvider) -> persistenceProvidersItem.getChildren().add(new TreeItem<>(persistenceProvider)));
-
-        TreeItem<String> databasesItem = new TreeItem<>(MenuCategory.DATABASES);
-        Set<String> databases = resultsService.getDataSources();
-        databases.forEach((dbName) -> databasesItem.getChildren().add(new TreeItem<>(dbName)));
-
-        rootItem.getChildren().add(operationsItem);
-        rootItem.getChildren().add(persistenceProvidersItem);
-        rootItem.getChildren().add(databasesItem);
-
+        prepareGroupByList();
+        prepareResultsList();
     }
 
-    private void showResults(TreeItem<String> selectedItem) {
+    private void prepareGroupByList() {
+
+        groupResultsListView.getItems().clear();
+
+        groupResultsListView.getItems().add("None");
+        groupResultsListView.getItems().add(TableColumns.DATABASE);
+        groupResultsListView.getItems().add(TableColumns.BENCHMARK);
+        groupResultsListView.getItems().add(TableColumns.PERSISTENCE_PROVIDER);
+    }
+
+    private void prepareResultsList() {
+
+        resultsDirectoriesListView.getItems().clear();
+
+        try {
+            Files.createDirectories(Paths.get(RESULTS_DIRECTORY));
+            List<Path> resultsList = Files.list(Paths.get(RESULTS_DIRECTORY)).collect(Collectors.toList());
+
+            resultsList.stream()
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(result -> resultsDirectoriesListView.getItems().add(String.valueOf(result.getFileName())));
+        } catch (IOException e) {
+            System.out.println("Can not access results directory: " + RESULTS_DIRECTORY);
+        }
+
+        resultsDirectoriesListView.getSelectionModel().selectFirst();
+    }
+
+    private void showResults(String selectedDirectory) {
+        if (!StringUtils.isEmpty(selectedDirectory)) {
+            ResultsTabCtrl resultsTabCtrl = ResultsTabCtrl.getInstance();
+            resultsTabCtrl.showResults(RESULTS_DIRECTORY + selectedDirectory, selectedDirectory);
+            groupResultsListView.getSelectionModel().selectFirst();
+        }
+    }
+
+    private void groupTableByColumn(String column) {
         ResultsTabCtrl resultsTabCtrl = ResultsTabCtrl.getInstance();
-        resultsTabCtrl.showResults(selectedItem);
+        resultsTabCtrl.groupTableByColumn(column);
     }
 }

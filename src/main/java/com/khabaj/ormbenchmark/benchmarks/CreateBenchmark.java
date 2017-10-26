@@ -1,6 +1,6 @@
 package com.khabaj.ormbenchmark.benchmarks;
 
-public interface OrmBenchmark {
+public interface CreateBenchmark extends PersistenceBenchmark{
 
     void insertOneRow();
     void insert100Rows();

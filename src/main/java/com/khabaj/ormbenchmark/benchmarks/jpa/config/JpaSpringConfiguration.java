@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.benchmarks.config;
+package com.khabaj.ormbenchmark.benchmarks.jpa.config;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.persistence.config.PersistenceUnitProperties;

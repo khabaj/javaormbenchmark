@@ -1,32 +1,35 @@
 package com.khabaj.ormbenchmark.launcher.results;
 
+import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.TreeTableView;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import org.apache.commons.lang.StringUtils;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class ResultsTabCtrl implements Initializable {
 
     private static ResultsTabCtrl instance;
+    private ResultsService resultsService;
+    private JFXTreeTableView<Result> tableView;
 
     @FXML
     private ResultsMenuCtrl resultsMenuController;
-
     @FXML
     private VBox resultsContent;
-
-    ResultsService resultsService;
 
     public static ResultsTabCtrl getInstance() {
         return instance;
@@ -35,47 +38,128 @@ public class ResultsTabCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        resultsService = ResultsService.getInstance();
         this.instance = this;
-
-
-        /******TO remove***/
-        String resultsDirectoryPath = "src/test/resources/2017-10-19 14-39-32";
-
-        ResultsService resultsService = ResultsService.getInstance();
-        List<Result> results = resultsService.loadResults(resultsDirectoryPath);
-        resultsMenuController.refreshMenu();
+        resultsService = ResultsService.getInstance();
     }
 
-    public void loadResults(String resultsDirectoryPath) {
+    public void showResults(String resultsDirectoryPath, String selectedBenchmark) {
 
-        List<Result> results = resultsService.loadResults(resultsDirectoryPath);
-        resultsMenuController.refreshMenu();
-    }
-
-    public void showResults(TreeItem<String> selectedItem) {
         resultsContent.getChildren().clear();
+        resultsService.loadResults(resultsDirectoryPath);
+        buildResultsTable();
 
-        String menuCategory;
+        Label label = new Label();
+        label.setFont(new Font("Arial", 24));
+        label.setText(selectedBenchmark);
 
-        String value = selectedItem.getParent().getValue();
-        if (!StringUtils.isEmpty(value))
-            menuCategory = value;
-        else
-            menuCategory = selectedItem.getValue();
+        resultsContent.getChildren().addAll(label,tableView);
+    }
 
-        switch (menuCategory) {
-            case MenuCategory.OPERATIONS:
-                printChart(selectedItem.getValue());
-                break;
-            case MenuCategory.PERSISTENCE_PROVIDERS:
-                break;
-            case MenuCategory.DATABASES:
-                break;
+    private void buildResultsTable() {
+
+        tableView = new JFXTreeTableView<>();
+        tableView.setColumnResizePolicy(TreeTableView.CONSTRAINED_RESIZE_POLICY);
+        VBox.setVgrow(tableView, Priority.ALWAYS);
+        tableView.getColumns().setAll(prepareTableColumns());
+        tableView.setShowRoot(false);
+        tableView.setEditable(true);
+
+        TreeItem<Result> root = new RecursiveTreeItem<>(FXCollections.observableList(resultsService.getResults()), RecursiveTreeObject::getChildren);
+        tableView.setRoot(root);
+    }
+
+    public void refreshMenu() {
+        resultsMenuController.refreshMenu();
+    }
+
+    private List<JFXTreeTableColumn<Result, ?>> prepareTableColumns() {
+
+        List<JFXTreeTableColumn<Result, ?>> tableColumns = new ArrayList<>();
+
+        JFXTreeTableColumn<Result, String> databaseColumn = new JFXTreeTableColumn<>(TableColumns.DATABASE);
+        databaseColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, String> param) -> {
+            if (databaseColumn.validateValue(param)) {
+                return param.getValue().getValue().databaseProperty();
+            } else {
+                return databaseColumn.getComputedValue(param);
+            }
+        });
+        tableColumns.add(databaseColumn);
+
+        JFXTreeTableColumn<Result, String> benchmarkColumn = new JFXTreeTableColumn<>(TableColumns.BENCHMARK);
+        benchmarkColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, String> param) -> {
+            if (benchmarkColumn.validateValue(param)) {
+                return param.getValue().getValue().operationProperty();
+            } else {
+                return benchmarkColumn.getComputedValue(param);
+            }
+        });
+        tableColumns.add(benchmarkColumn);
+
+        JFXTreeTableColumn<Result, String> persistenceProviderColumn = new JFXTreeTableColumn<>(TableColumns.PERSISTENCE_PROVIDER);
+        persistenceProviderColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, String> param) -> {
+            if (persistenceProviderColumn.validateValue(param)) {
+                return param.getValue().getValue().persistenceProviderProperty();
+            } else {
+                return persistenceProviderColumn.getComputedValue(param);
+            }
+        });
+        tableColumns.add(persistenceProviderColumn);
+
+        JFXTreeTableColumn<Result, Number> scoreColumn = new JFXTreeTableColumn<>(TableColumns.SCORE);
+        scoreColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, Number> param) -> {
+            if (scoreColumn.validateValue(param)) {
+                return param.getValue().getValue().scoreProperty();
+            } else {
+                return scoreColumn.getComputedValue(param);
+            }
+        });
+        tableColumns.add(scoreColumn);
+
+        JFXTreeTableColumn<Result, Number> scoreErrorColumn = new JFXTreeTableColumn<>(TableColumns.SCORE_ERROR);
+        scoreErrorColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, Number> param) -> {
+            if (scoreErrorColumn.validateValue(param)) {
+                return param.getValue().getValue().scoreErrorProperty();
+            } else {
+                return scoreErrorColumn.getComputedValue(param);
+            }
+        });
+        tableColumns.add(scoreErrorColumn);
+
+        JFXTreeTableColumn<Result, String> unitColumn = new JFXTreeTableColumn<>(TableColumns.Unit);
+        unitColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, String> param) -> {
+            if (unitColumn.validateValue(param)) {
+                return param.getValue().getValue().scoreUnitProperty();
+            } else {
+                return unitColumn.getComputedValue(param);
+            }
+        });
+        tableColumns.add(unitColumn);
+
+        return tableColumns;
+    }
+
+    public void groupTableByColumn(String columnName) {
+
+        if (tableView != null) {
+            unGroupAll();
+            TreeTableColumn<Result, ?> column = tableView.getColumns()
+                    .stream()
+                    .filter(col -> col.getText().equals(columnName))
+                    .findFirst().orElse(null);
+
+            if (column != null) {
+                tableView.group(column);
+            }
         }
     }
 
-    private void printChart(String operation) {
+    private void unGroupAll() {
+        tableView.getColumns().forEach(col -> tableView.unGroup(col));
+    }
+
+
+    /*private void printChart(String operation) {
 
         List<Result> results = resultsService.getResults();
 
@@ -100,7 +184,6 @@ public class ResultsTabCtrl implements Initializable {
         List<XYChart.Series<String, Number>> series = new ArrayList<>();
 
 
-
         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
         series1.setName("Hibernate");
         series1.getData().add(new XYChart.Data<>("H2", 1.0));
@@ -114,5 +197,5 @@ public class ResultsTabCtrl implements Initializable {
         barChart.getData().addAll(series1, series2);
         resultsContent.getChildren().add(barChart);
 
-    }
+    }*/
 }

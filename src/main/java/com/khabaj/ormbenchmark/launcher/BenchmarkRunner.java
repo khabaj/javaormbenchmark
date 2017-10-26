@@ -36,7 +36,7 @@ public class BenchmarkRunner extends Thread {
             options.include(benchmark);
         }
 
-        options.resultFormat(ResultFormatType.JSON);
+        options.resultFormat(ResultFormatType.CSV);
 
         DataSourceService dataSourceService = DataSourceService.getInstance();
         List<DataSource> dataSources = dataSourceService.getDataSources();
@@ -61,7 +61,7 @@ public class BenchmarkRunner extends Thread {
 
         Platform.runLater(() -> {
             ResultsTabCtrl resultsTabCtrl = ResultsTabCtrl.getInstance();
-            resultsTabCtrl.loadResults(resultsDirectoryPath);
+            resultsTabCtrl.refreshMenu();
         });
     }
 
@@ -80,6 +80,6 @@ public class BenchmarkRunner extends Thread {
     }
 
     private String prepareResultFileName(String dataSourceName) {
-        return dataSourceName + ".json";
+        return dataSourceName + ".csv";
     }
 }

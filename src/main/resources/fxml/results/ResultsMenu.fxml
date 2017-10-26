@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXTreeView?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
-<VBox prefWidth="215.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.results.ResultsMenuCtrl">
+<?import javafx.scene.text.Font?>
+<VBox prefHeight="579.0" prefWidth="215.0" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.results.ResultsMenuCtrl">
    <children>
-      <JFXTreeView fx:id="resultsMenuTreeView" VBox.vgrow="ALWAYS" />
+      <Label text="Group Results by:">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </Label>
+      <JFXListView fx:id="groupResultsListView" prefHeight="186.0" prefWidth="215.0" style="-fx-background-insets: 0;" />
+      <Label text="Open Results:">
+         <font>
+            <Font name="Calibri" size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-insets: 0;" VBox.vgrow="ALWAYS">
+         <content>
+            <JFXListView fx:id="resultsDirectoriesListView" style="-fx-background-insets: 0;" />
+         </content>
+      </ScrollPane>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </VBox>

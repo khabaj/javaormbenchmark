@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.benchmarks.config;
+package com.khabaj.ormbenchmark.benchmarks.jpa.config;
 
 public enum JpaVendor {
     HIBERNATE("Hibernate"),

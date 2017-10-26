@@ -1,0 +1,7 @@
+"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit"
+"com.khabaj.ormbenchmark.benchmarks.jpa.create.EclipseLinkJpa_CreateBenchmark.insert100Rows","avgt",1,5,13.235280817088054,0.6040175469518168,"ms/op"
+"com.khabaj.ormbenchmark.benchmarks.jpa.create.EclipseLinkJpa_CreateBenchmark.insertOneRow","avgt",1,5,2.993195291611721,1.385787608661533,"ms/op"
+"com.khabaj.ormbenchmark.benchmarks.jpa.create.HibernateJpa_CreateBenchmark.insert100Rows","avgt",1,5,21.27084555,0.5845485000071631,"ms/op"
+"com.khabaj.ormbenchmark.benchmarks.jpa.create.HibernateJpa_CreateBenchmark.insertOneRow","avgt",1,5,0.30080612409931623,0.00919132174089886,"ms/op"
+"com.khabaj.ormbenchmark.benchmarks.jpa.create.OpenJpa_CreateBenchmark.insert100Rows","avgt",1,5,13.52644012642972,3.298009971482275,"ms/op"
+"com.khabaj.ormbenchmark.benchmarks.jpa.create.OpenJpa_CreateBenchmark.insertOneRow","avgt",1,5,2.6293138973550523,0.3770419386852194,"ms/op"
