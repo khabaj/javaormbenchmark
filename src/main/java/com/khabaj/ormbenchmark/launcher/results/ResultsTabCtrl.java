@@ -40,6 +40,7 @@ public class ResultsTabCtrl implements Initializable {
 
         this.instance = this;
         resultsService = ResultsService.getInstance();
+        refreshMenu();
     }
 
     public void showResults(String resultsDirectoryPath, String selectedBenchmark) {
