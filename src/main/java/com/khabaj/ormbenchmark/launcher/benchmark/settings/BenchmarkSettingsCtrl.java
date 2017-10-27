@@ -40,6 +40,9 @@ public class BenchmarkSettingsCtrl implements Initializable {
     JFXTreeView banchmarksTreeView;
 
     @FXML
+    JFXTextField benchmarkNameField;
+
+    @FXML
     JFXTextField forksField;
 
     @FXML
@@ -132,6 +135,7 @@ public class BenchmarkSettingsCtrl implements Initializable {
 
         benchmarkSettings = new BenchmarkSettings();
 
+        Bindings.bindBidirectional(benchmarkNameField.textProperty(), benchmarkSettings.benchmarkNameProperty());
         Bindings.bindBidirectional(forksField.textProperty(), benchmarkSettings.forksProperty(), new NumberStringConverter());
         Bindings.bindBidirectional(warmupIterationsField.textProperty(), benchmarkSettings.warmupIterationsProperty(), new NumberStringConverter());
         Bindings.bindBidirectional(measurementIteriationsField.textProperty(), benchmarkSettings.measurementIteriationsProperty(), new NumberStringConverter());

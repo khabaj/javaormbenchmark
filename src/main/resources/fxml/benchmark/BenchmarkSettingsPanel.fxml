@@ -16,6 +16,11 @@
          <children>
             <VBox fillWidth="false" prefHeight="265.0" prefWidth="150.0" spacing="30.0">
                <children>
+                  <JFXTextField fx:id="benchmarkNameField" labelFloat="true" promptText="Benchmark Name">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </JFXTextField>
                   <JFXTextField fx:id="forksField" labelFloat="true" promptText="Forks" text="1" />
                   <JFXTextField fx:id="warmupIterationsField" labelFloat="true" promptText="Warmup Iterations" text="1" />
                   <JFXTextField fx:id="measurementIteriationsField" labelFloat="true" promptText="Measurement Iterations" text="1" />

@@ -25,7 +25,7 @@ public abstract class Jpa_CreateBenchmark extends JpaBenchmark implements Create
 
     @Benchmark
     @Override
-    public void insertOneRow() {
+    public void insert1Entity() {
         User user = new User("John", "Stevens");
         entityManager.getTransaction().begin();
         entityManager.persist(user);
@@ -34,7 +34,7 @@ public abstract class Jpa_CreateBenchmark extends JpaBenchmark implements Create
 
     @Benchmark
     @Override
-    public void insert100Rows() {
+    public void insert100Entities() {
         entityManager.getTransaction().begin();
         for (int i = 0; i<100; i++) {
             entityManager.persist(new User("John" + i, "LastName" + i));
@@ -44,7 +44,7 @@ public abstract class Jpa_CreateBenchmark extends JpaBenchmark implements Create
 
     @Benchmark
     @Override
-    public void insert10000Rows() {
+    public void insert10000Entities() {
         entityManager.getTransaction().begin();
         performBatchInsert(10000, 5000);
         entityManager.getTransaction().commit();
@@ -52,7 +52,7 @@ public abstract class Jpa_CreateBenchmark extends JpaBenchmark implements Create
 
     @Benchmark
     @Override
-    public void insert100000Rows() {
+    public void insert100000Entities() {
         entityManager.getTransaction().begin();
         performBatchInsert(100000, 5000);
         entityManager.getTransaction().commit();

@@ -5,6 +5,7 @@ import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSourceService;
 import com.khabaj.ormbenchmark.launcher.benchmark.settings.BenchmarkSettings;
 import com.khabaj.ormbenchmark.launcher.results.ResultsTabCtrl;
 import javafx.application.Platform;
+import org.apache.commons.lang.StringUtils;
 import org.openjdk.jmh.results.format.ResultFormatType;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
@@ -41,7 +42,8 @@ public class BenchmarkRunner extends Thread {
         DataSourceService dataSourceService = DataSourceService.getInstance();
         List<DataSource> dataSources = dataSourceService.getDataSources();
 
-        String resultsDirectoryPath = "./benchmark_results/" + getCurrentDTString();
+        String resultsDirectoryPath = "./benchmark_results/" + getCurrentDTString() +
+                (StringUtils.isEmpty(benchmarkSettings.getBenchmarkName()) ? "" : "_" + benchmarkSettings.getBenchmarkName());
         createResultsDirectories(resultsDirectoryPath);
 
         for (DataSource dataSource : dataSources) {

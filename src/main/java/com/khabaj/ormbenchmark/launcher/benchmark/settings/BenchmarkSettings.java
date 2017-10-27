@@ -1,9 +1,6 @@
 package com.khabaj.ormbenchmark.launcher.benchmark.settings;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import org.openjdk.jmh.annotations.Mode;
 
 import java.util.List;
@@ -11,6 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BenchmarkSettings {
 
+    private StringProperty benchmarkName;
     private IntegerProperty forks;
     private IntegerProperty warmupIterations;
     private IntegerProperty measurementIteriations;
@@ -19,12 +17,25 @@ public class BenchmarkSettings {
     private ObjectProperty<List<String>> benchmarksToRun;
 
     public BenchmarkSettings() {
+        this.benchmarkName = new SimpleStringProperty();
         this.forks = new SimpleIntegerProperty();
         this.warmupIterations = new SimpleIntegerProperty();
         this.measurementIteriations = new SimpleIntegerProperty();
         this.benchmarkMode = new SimpleObjectProperty<>();
         this.timeUnit = new SimpleObjectProperty<>();
         this.benchmarksToRun = new SimpleObjectProperty<>();
+    }
+
+    public String getBenchmarkName() {
+        return benchmarkName.get();
+    }
+
+    public StringProperty benchmarkNameProperty() {
+        return benchmarkName;
+    }
+
+    public void setBenchmarkName(String benchmarkName) {
+        this.benchmarkName.set(benchmarkName);
     }
 
     public int getForks() {
