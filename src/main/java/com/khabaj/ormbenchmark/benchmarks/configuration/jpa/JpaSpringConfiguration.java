@@ -1,12 +1,12 @@
-package com.khabaj.ormbenchmark.benchmarks.jpa.config;
+package com.khabaj.ormbenchmark.benchmarks.configuration.jpa;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import com.khabaj.ormbenchmark.benchmarks.configuration.DataSourceConfiguration;
 import org.eclipse.persistence.config.PersistenceUnitProperties;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter;
@@ -19,30 +19,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@PropertySource("file:active_datasource.properties")
+@Import(DataSourceConfiguration.class)
 public class JpaSpringConfiguration {
 
-    @Value("${datasource.url:jdbc:h2:mem:ormbenchmarkdb}")
-    private String dbUrl;
-
-    @Value("${datasource.driver:org.h2.Driver}")
-    private String jdbcDriver;
-
-    @Value("${datasource.username:root}")
-    private String dbUserName;
-
-    @Value("${datasource.password:}")
-    private String dbPassword;
-
-    @Bean
-    public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl(dbUrl);
-        dataSource.setDriverClassName(jdbcDriver);
-        dataSource.setUsername(dbUserName);
-        dataSource.setPassword(dbPassword);
-        return dataSource;
-    }
+    @Autowired
+    DataSource dataSource;
 
     @Lazy
     @Bean(name = "entityManagerFactory")
@@ -74,7 +55,7 @@ public class JpaSpringConfiguration {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactory.setPersistenceUnitName(jpaVendor.getJpaVendorName());
-        entityManagerFactory.setDataSource(dataSource());
+        entityManagerFactory.setDataSource(dataSource);
         entityManagerFactory.setPackagesToScan("com.khabaj.ormbenchmark.*");
         entityManagerFactory.setJpaPropertyMap(jpaPropertyMap);
         entityManagerFactory.afterPropertiesSet();

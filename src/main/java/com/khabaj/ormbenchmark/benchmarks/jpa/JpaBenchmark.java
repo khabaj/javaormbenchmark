@@ -1,8 +1,8 @@
 package com.khabaj.ormbenchmark.benchmarks.jpa;
 
 import com.khabaj.ormbenchmark.benchmarks.BaseBenchmark;
-import com.khabaj.ormbenchmark.benchmarks.jpa.config.JpaSpringConfiguration;
-import com.khabaj.ormbenchmark.benchmarks.jpa.config.JpaVendor;
+import com.khabaj.ormbenchmark.benchmarks.configuration.jpa.JpaSpringConfiguration;
+import com.khabaj.ormbenchmark.benchmarks.configuration.jpa.JpaVendor;
 import org.openjdk.jmh.annotations.Setup;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
