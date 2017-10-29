@@ -1,4 +1,7 @@
 package com.khabaj.ormbenchmark.benchmarks;
 
-public interface UpdateBenchmark extends PersistenceBenchmark{
+import org.openjdk.jmh.infra.Blackhole;
+
+public interface UpdateBenchmark extends PersistenceBenchmark {
+    void update1Entity(Blackhole blackhole);
 }

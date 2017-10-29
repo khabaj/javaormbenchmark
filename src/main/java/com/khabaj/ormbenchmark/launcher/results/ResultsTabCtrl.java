@@ -63,7 +63,7 @@ public class ResultsTabCtrl implements Initializable {
         VBox.setVgrow(tableView, Priority.ALWAYS);
         tableView.getColumns().setAll(prepareTableColumns());
         tableView.setShowRoot(false);
-        tableView.setEditable(true);
+        tableView.setEditable(false);
 
         TreeItem<Result> root = new RecursiveTreeItem<>(FXCollections.observableList(resultsService.getResults()), RecursiveTreeObject::getChildren);
         tableView.setRoot(root);
@@ -150,7 +150,7 @@ public class ResultsTabCtrl implements Initializable {
                     .findFirst().orElse(null);
 
             if (column != null) {
-                tableView.group(column);
+                new Thread(() -> tableView.group(column)).start();
             }
         }
     }

@@ -4,3 +4,4 @@ target
 *.out
 benchmark_results
 active_datasource.properties
+*.db

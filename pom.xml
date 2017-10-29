@@ -110,7 +110,7 @@ questions.
         <dependency>
             <groupId>com.jfoenix</groupId>
             <artifactId>jfoenix</artifactId>
-            <version>RELEASE</version>
+            <version>1.9.1</version>
         </dependency>
 
         <dependency>

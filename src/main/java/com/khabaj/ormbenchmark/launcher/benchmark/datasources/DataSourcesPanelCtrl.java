@@ -37,7 +37,7 @@ public class DataSourcesPanelCtrl implements Initializable {
 
         dataSourceService = DataSourceService.getInstance();
         dataSourceService.addDataSource(new DataSource("MySQL", "jdbc:mysql://localhost:3306/ormbenchmarkdb?createDatabaseIfNotExist=true","root", JDBCDriver.MYSQL));
-        dataSourceService.addDataSource(new DataSource("H2 (In-memory)", "jdbc:h2:mem:ormbenchmarkdb", JDBCDriver.H2));
+        dataSourceService.addDataSource(new DataSource("H2 (In-memory)", "jdbc:h2:file:./ormbenchmarkdb", JDBCDriver.H2));
 
         TreeItem<DataSource> root = new RecursiveTreeItem<>(dataSourceService.getDataSources(), RecursiveTreeObject::getChildren);
         dataSourcesTable.getColumns().setAll(connectionNameColumn, connectionURLColumn, jdbcDriverColumn);

@@ -9,12 +9,6 @@ import org.openjdk.jmh.annotations.TearDown;
 
 public abstract class Jpa_CreateBenchmark extends JpaBenchmark implements CreateBenchmark {
 
-    @TearDown
-    public void closeApplicationContext() {
-        entityManager.close();
-        applicationContext.close();
-    }
-
     @TearDown(Level.Invocation)
     public void clearAfterEveryInvocation() {
         entityManager.getTransaction().begin();

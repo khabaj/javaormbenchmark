@@ -4,6 +4,7 @@ import com.khabaj.ormbenchmark.benchmarks.BaseBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.configuration.jpa.JpaSpringConfiguration;
 import com.khabaj.ormbenchmark.benchmarks.configuration.jpa.JpaVendor;
 import org.openjdk.jmh.annotations.Setup;
+import org.openjdk.jmh.annotations.TearDown;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -25,6 +26,12 @@ public abstract class JpaBenchmark extends BaseBenchmark{
             }
             System.out.println(e.getMessage());
         }
+    }
+
+    @TearDown
+    public void closeApplicationContext() {
+        entityManager.close();
+        applicationContext.close();
     }
 
     @Setup()

@@ -18,7 +18,7 @@ public class DataSourceConfiguration {
     @Value("${datasource.driver:org.h2.Driver}")
     private String jdbcDriver;
 
-    @Value("${datasource.username:root}")
+    @Value("${datasource.username:}")
     private String dbUserName;
 
     @Value("${datasource.password:}")

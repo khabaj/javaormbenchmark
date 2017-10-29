@@ -56,7 +56,7 @@ public class JpaSpringConfiguration {
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         entityManagerFactory.setPersistenceUnitName(jpaVendor.getJpaVendorName());
         entityManagerFactory.setDataSource(dataSource);
-        entityManagerFactory.setPackagesToScan("com.khabaj.ormbenchmark.*");
+        entityManagerFactory.setPackagesToScan("com.khabaj.ormbenchmark.benchmarks.*");
         entityManagerFactory.setJpaPropertyMap(jpaPropertyMap);
         entityManagerFactory.afterPropertiesSet();
 
