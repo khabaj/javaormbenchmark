@@ -5,13 +5,14 @@ import com.khabaj.ormbenchmark.benchmarks.configuration.HibernateSpringConfigura
 import com.khabaj.ormbenchmark.benchmarks.entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.TearDown;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class HibernateBenchmark extends BaseBenchmark {
+import java.util.List;
+
+public abstract class HibernateBenchmark extends BaseBenchmark {
 
     protected ConfigurableApplicationContext applicationContext;
     protected Session session;
@@ -30,24 +31,36 @@ public class HibernateBenchmark extends BaseBenchmark {
     }
 
     @TearDown
-    public void closeApplicationContext() {
+    public void clear() {
+        session.getTransaction().begin();
+        session.createQuery("delete from User").executeUpdate();
+        session.getTransaction().commit();
+        session.clear();
+
         session.close();
         applicationContext.close();
     }
 
+    protected void performBatchInsert(int rowsNumber) {
 
+        session.getTransaction().begin();
+        for (int i = 0; i < rowsNumber; i++) {
 
-    protected void performBatchInsert(int rowsNumber, int batchSize) {
-        for (int i = 0; i<rowsNumber; i++) {
-
-            if ( i > 0 && i % batchSize == 0 ) {
+            if (i > 0 && i % BATCH_SIZE == 0) {
                 session.flush();
                 session.clear();
 
                 session.getTransaction().commit();
                 session.getTransaction().begin();
             }
-            session.persist(new User("John" + i, "LastName" + i));
+            User user = new User("John" + i, "LastName" + i);
+            session.persist(user);
         }
+        session.getTransaction().commit();
+    }
+
+    protected List<User> getUsers() {
+        List<User> users = session.createQuery("from User").list();
+        return users;
     }
 }

@@ -1,8 +1,8 @@
 package com.khabaj.ormbenchmark.benchmarks.entities;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "user_table")
@@ -18,11 +18,8 @@ public class User {
     private String lastName;
 
     @Column
-    @Temporal(TemporalType.DATE)
-    private Date creationDate;
-
-    @OneToMany(mappedBy = "user")
-    private Set<Phone> phones;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateDate;
 
     public User() {
     }
@@ -30,7 +27,7 @@ public class User {
     public User(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.creationDate = new Date(System.currentTimeMillis());
+        this.updateDate = new Timestamp(System.currentTimeMillis());
     }
 
     public int getId() {
@@ -57,19 +54,15 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public Date getUpdateDate() {
+        return updateDate;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+    public void setUpdateDate(Date creationDate) {
+        this.updateDate = creationDate;
     }
 
-    public Set<Phone> getPhones() {
-        return phones;
-    }
-
-    public void setPhones(Set<Phone> phones) {
-        this.phones = phones;
+    public void update() {
+        this.updateDate = new Timestamp(System.currentTimeMillis());
     }
 }

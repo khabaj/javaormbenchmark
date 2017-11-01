@@ -3,7 +3,6 @@ package com.khabaj.ormbenchmark.launcher.benchmark.settings;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
-import com.khabaj.ormbenchmark.benchmarks.CreateBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.PersistenceBenchmark;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.StringProperty;
@@ -25,10 +24,7 @@ import org.reflections.util.FilterBuilder;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -66,9 +62,10 @@ public class BenchmarkSettingsCtrl implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        instance = this;
         prepareAvailableBenchmarks();
         prepareBenchmarkSettingsForm();
-        instance = this;
+
     }
 
     private void prepareAvailableBenchmarks() {
@@ -78,39 +75,48 @@ public class BenchmarkSettingsCtrl implements Initializable {
 
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .setUrls(ClasspathHelper.forPackage(PACKAGE_TO_SCAN))
-                .filterInputsBy(new FilterBuilder.Exclude(PACKAGE_TO_EXCLUDE_PATTERN))
-                .setScanners(new SubTypesScanner());
+                .setScanners(new SubTypesScanner())
+                .filterInputsBy(new FilterBuilder.Exclude(PACKAGE_TO_EXCLUDE_PATTERN));
+
 
         Reflections reflections = new Reflections(configurationBuilder);
 
-        Method[] benchmarkMethods = CreateBenchmark.class.getDeclaredMethods();
         Set<Class<? extends PersistenceBenchmark>> subtypes = reflections.getSubTypesOf(PersistenceBenchmark.class);
 
-        Set<Class<? extends PersistenceBenchmark>> benchmarkClasses = subtypes.stream()
-                .filter(el -> !Modifier.isAbstract(el.getModifiers()))
-                .filter(el -> !Modifier.isInterface(el.getModifiers()))
+        Set<Class<? extends PersistenceBenchmark>> benchmarks = subtypes.stream()
+                .filter(el -> Modifier.isInterface(el.getModifiers()))
                 .collect(Collectors.toSet());
 
-        buildBenchmarksTree(benchmarkMethods, benchmarkClasses);
+        buildBenchmarksTree(reflections, benchmarks);
     }
 
-    private void buildBenchmarksTree(Method[] benchmarkMethods, Set<Class<? extends PersistenceBenchmark>> benchmarkClasses) {
+    private void buildBenchmarksTree(Reflections reflections, Set<Class<? extends PersistenceBenchmark>> benchmarks) {
 
         CheckBoxTreeItem<String> rootItem = new CheckBoxTreeItem<>();
         rootItem.setExpanded(true);
         rootItem.setIndependent(true);
 
-        for (Method method : benchmarkMethods) {
-            List<CheckBoxTreeItem<String>> list = benchmarkClasses
-                    .stream()
-                    .map(clazz -> new CheckBoxTreeItem<>(clazz.getSimpleName()))
-                    .collect(Collectors.toList());
+        benchmarks.forEach((Class clazz) -> {
+            Set<Class> benchmarkClasses =
+                    ((Set<Class>) reflections.getSubTypesOf(clazz)).stream()
+                            .filter((Class el) -> !Modifier.isAbstract(el.getModifiers()))
+                            .collect(Collectors.toSet());
 
-            CheckBoxTreeItem<String> benchmarkItem = new CheckBoxTreeItem<>(method.getName());
-            benchmarkItem.getChildren().addAll(list);
-            benchmarkItem.setIndependent(false);
-            rootItem.getChildren().add(benchmarkItem);
-        }
+            Arrays.stream(clazz.getDeclaredMethods())
+                    .map(Method::getName)
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(method -> {
+                        List<CheckBoxTreeItem<String>> list = benchmarkClasses
+                                .stream()
+                                .map((Class el) -> new CheckBoxTreeItem<>(el.getSimpleName()))
+                                .collect(Collectors.toList());
+
+                        CheckBoxTreeItem<String> benchmarkItem = new CheckBoxTreeItem<>(method);
+                        benchmarkItem.getChildren().addAll(list);
+                        benchmarkItem.setIndependent(false);
+                        rootItem.getChildren().add(benchmarkItem);
+                    });
+        });
 
         banchmarksTreeView.setCellFactory(CheckBoxTreeCell.<String>forTreeView());
         banchmarksTreeView.setRoot(rootItem);
@@ -122,7 +128,7 @@ public class BenchmarkSettingsCtrl implements Initializable {
         ChangeListener<String> acceptOnlyDigitsListener = (observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*"))
                 ((StringProperty) observable).set(oldValue);
-            else if(!StringUtils.isEmpty(newValue) && Integer.parseInt(newValue) > 100000) {
+            else if (!StringUtils.isEmpty(newValue) && Integer.parseInt(newValue) > 100000) {
                 ((StringProperty) observable).set(oldValue);
             }
         };

@@ -5,42 +5,39 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<VBox prefHeight="320.0" prefWidth="510.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.benchmark.settings.BenchmarkSettingsCtrl">
-   <children>
-      <Label text="Benchmark Setting:">
-         <font>
-            <Font name="System Bold" size="16.0" />
-         </font>
-      </Label>
-      <HBox spacing="20.0">
-         <children>
-            <VBox fillWidth="false" prefHeight="265.0" prefWidth="150.0" spacing="30.0">
-               <children>
-                  <JFXTextField fx:id="benchmarkNameField" labelFloat="true" promptText="Benchmark Name">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </JFXTextField>
-                  <JFXTextField fx:id="forksField" labelFloat="true" promptText="Forks" text="1" />
-                  <JFXTextField fx:id="warmupIterationsField" labelFloat="true" promptText="Warmup Iterations" text="1" />
-                  <JFXTextField fx:id="measurementIteriationsField" labelFloat="true" promptText="Measurement Iterations" text="1" />
-                  <JFXComboBox fx:id="benchmarkModeField" labelFloat="true" promptText="Benchmark Mode" />
-                  <JFXComboBox fx:id="timeUnitField" labelFloat="true" prefHeight="25.0" prefWidth="135.0" promptText="Time Unit" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </VBox>
-            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label text="Benchmarks to run:" />
-                  <JFXTreeView fx:id="banchmarksTreeView" />
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="320.0" prefWidth="510.0" spacing="10.0"
+      xmlns="http://javafx.com/javafx/8.0.121"
+      fx:controller="com.khabaj.ormbenchmark.launcher.benchmark.settings.BenchmarkSettingsCtrl">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+    <Label text="Benchmark Setting:">
+        <font>
+            <Font name="System Bold" size="16.0"/>
+        </font>
+    </Label>
+    <HBox spacing="20.0">
+        <VBox fillWidth="false" prefHeight="265.0" prefWidth="150.0" spacing="30.0">
+            <children>
+                <JFXTextField fx:id="benchmarkNameField" labelFloat="true" promptText="Benchmark Name"/>
+                <JFXTextField fx:id="forksField" labelFloat="true" promptText="Forks" text="1"/>
+                <JFXTextField fx:id="warmupIterationsField" labelFloat="true" promptText="Warmup Iterations"
+                              text="1"/>
+                <JFXTextField fx:id="measurementIteriationsField" labelFloat="true"
+                              promptText="Measurement Iterations" text="1"/>
+                <JFXComboBox fx:id="benchmarkModeField" labelFloat="true" promptText="Benchmark Mode"/>
+                <JFXComboBox fx:id="timeUnitField" labelFloat="true" prefHeight="25.0" prefWidth="135.0"
+                             promptText="Time Unit"/>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+        </VBox>
+        <VBox spacing="10.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label text="Benchmarks to run:"/>
+                <JFXTreeView fx:id="banchmarksTreeView"/>
+            </children>
+        </VBox>
+    </HBox>
 </VBox>

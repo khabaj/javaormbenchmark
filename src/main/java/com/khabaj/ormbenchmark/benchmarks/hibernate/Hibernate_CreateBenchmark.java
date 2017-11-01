@@ -28,26 +28,24 @@ public class Hibernate_CreateBenchmark extends HibernateBenchmark implements Cre
     @Benchmark
     @Override
     public void insert100Entities() {
-        session.getTransaction().begin();
-        for (int i = 0; i<100; i++) {
-            session.persist(new User("John" + i, "LastName" + i));
-        }
-        session.getTransaction().commit();
+        performBatchInsert(100 );
+    }
+
+    @Benchmark
+    @Override
+    public void insert1000Entities() {
+        performBatchInsert(100 );
     }
 
     @Benchmark
     @Override
     public void insert10000Entities() {
-        session.getTransaction().begin();
-        performBatchInsert(10000, 5000);
-        session.getTransaction().commit();
+        performBatchInsert(10000);
     }
 
     @Benchmark
     @Override
     public void insert100000Entities() {
-        session.getTransaction().begin();
-        performBatchInsert(100000, 5000);
-        session.getTransaction().commit();
+        performBatchInsert(100000);
     }
 }

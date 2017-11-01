@@ -12,10 +12,10 @@ import javax.sql.DataSource;
 @PropertySource("file:active_datasource.properties")
 public class DataSourceConfiguration {
 
-    @Value("${datasource.url:jdbc:h2:mem:ormbenchmarkdb}")
+    @Value("${datasource.url:}")
     private String dbUrl;
 
-    @Value("${datasource.driver:org.h2.Driver}")
+    @Value("${datasource.driver:}")
     private String jdbcDriver;
 
     @Value("${datasource.username:}")
@@ -23,7 +23,6 @@ public class DataSourceConfiguration {
 
     @Value("${datasource.password:}")
     private String dbPassword;
-
 
     @Bean
     public DataSource getDataSource() {

@@ -1,5 +1,6 @@
 package com.khabaj.ormbenchmark.launcher;
 
+import com.khabaj.ormbenchmark.launcher.benchmark.BenchmarkTabCtrl;
 import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSource;
 import com.khabaj.ormbenchmark.launcher.benchmark.datasources.DataSourceService;
 import com.khabaj.ormbenchmark.launcher.benchmark.settings.BenchmarkSettings;
@@ -64,6 +65,10 @@ public class BenchmarkRunner extends Thread {
         Platform.runLater(() -> {
             ResultsTabCtrl resultsTabCtrl = ResultsTabCtrl.getInstance();
             resultsTabCtrl.refreshMenu();
+
+            BenchmarkTabCtrl benchmarkTabCtrl = BenchmarkTabCtrl.getInstance();
+            benchmarkTabCtrl.getStartBenchmarkButton().setDisable(false);
+            benchmarkTabCtrl.getStopBenchmarkButton().setDisable(true);
         });
     }
 

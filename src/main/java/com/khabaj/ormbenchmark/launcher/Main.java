@@ -35,7 +35,7 @@ public class Main extends Application {
             primaryStage.show();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText(e.toString());
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
     }

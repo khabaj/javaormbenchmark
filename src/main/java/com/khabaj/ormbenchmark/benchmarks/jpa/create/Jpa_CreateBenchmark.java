@@ -29,41 +29,24 @@ public abstract class Jpa_CreateBenchmark extends JpaBenchmark implements Create
     @Benchmark
     @Override
     public void insert100Entities() {
-        entityManager.getTransaction().begin();
-        for (int i = 0; i<100; i++) {
-            entityManager.persist(new User("John" + i, "LastName" + i));
-        }
-        entityManager.getTransaction().commit();
+        performBatchInsert(100);
+    }
+
+    @Benchmark
+    @Override
+    public void insert1000Entities() {
+        performBatchInsert(1000);
     }
 
     @Benchmark
     @Override
     public void insert10000Entities() {
-        entityManager.getTransaction().begin();
-        performBatchInsert(10000, 5000);
-        entityManager.getTransaction().commit();
+        performBatchInsert(10000);
     }
 
     @Benchmark
     @Override
     public void insert100000Entities() {
-        entityManager.getTransaction().begin();
-        performBatchInsert(100000, 5000);
-        entityManager.getTransaction().commit();
+        performBatchInsert(100000);
     }
-
-    private void performBatchInsert(int rowsNumber, int batchSize) {
-        for (int i = 0; i<rowsNumber; i++) {
-
-            if ( i > 0 && i % batchSize == 0 ) {
-                entityManager.flush();
-                entityManager.clear();
-
-                entityManager.getTransaction().commit();
-                entityManager.getTransaction().begin();
-            }
-            entityManager.persist(new User("John" + i, "LastName" + i));
-        }
-    }
-
 }

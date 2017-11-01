@@ -1,24 +1,25 @@
-package com.khabaj.ormbenchmark.benchmarks.hibernate;
+package com.khabaj.ormbenchmark.benchmarks.jpa.update;
 
 import com.khabaj.ormbenchmark.benchmarks.UpdateBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.entities.User;
+import com.khabaj.ormbenchmark.benchmarks.jpa.JpaBenchmark;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 
 import java.util.List;
 
-public class Hibernate_UpdateBenchmark extends HibernateBenchmark implements UpdateBenchmark {
+public abstract class Jpa_UpdateBenchmark extends JpaBenchmark implements UpdateBenchmark {
 
     List<User> users;
 
     @Setup
     public void populateDatabase() {
-        session.getTransaction().begin();
-        session.createQuery("delete from User").executeUpdate();
-        session.getTransaction().commit();
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("delete from User").executeUpdate();
+        entityManager.getTransaction().commit();
         performBatchInsert(NUMBER_OF_ROWS_IN_DB);
         users = getUsers();
-        session.clear();
+        entityManager.clear();
     }
 
     @Override
@@ -52,21 +53,20 @@ public class Hibernate_UpdateBenchmark extends HibernateBenchmark implements Upd
     }
 
     private void performBatchUpdate(int rowsToUpdate) {
-        session.getTransaction().begin();
 
+        entityManager.getTransaction().begin();
         for (int i = 0; i < rowsToUpdate; i++) {
-
             if (i > 0 && i % BATCH_SIZE == 0) {
-                session.flush();
-                session.clear();
+                entityManager.flush();
+                entityManager.clear();
 
-                session.getTransaction().commit();
-                session.getTransaction().begin();
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
             }
             User user = users.get(i);
             user.update();
-            session.update(user);
+            entityManager.merge(user);
         }
-        session.getTransaction().commit();
+        entityManager.getTransaction().commit();
     }
 }

@@ -26,12 +26,16 @@ public class BenchmarkTabCtrl implements Initializable{
 
     BenchmarkRunner benchmarkRunner;
 
+    public static BenchmarkTabCtrl instance;
+
     private void appendText(String valueOf) {
         Platform.runLater(() -> consoleTextArea.appendText(valueOf));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        instance = this;
+
         OutputStream out = new OutputStream() {
             @Override
             public void write(int b) throws IOException {
@@ -45,7 +49,8 @@ public class BenchmarkTabCtrl implements Initializable{
 
     @FXML
     public void startBenchmark() {
-        //startBenchmarkButton.setDisable(true);
+        startBenchmarkButton.setDisable(true);
+        stopBenchmarkButton.setDisable(false);
 
         BenchmarkSettingsCtrl ctrl = BenchmarkSettingsCtrl.getController();
         BenchmarkSettings benchmarkSettings = ctrl.getBenchmarkSettings();
@@ -58,10 +63,24 @@ public class BenchmarkTabCtrl implements Initializable{
     public void stopBenchmark() {
         //unsafe
         benchmarkRunner.stop();
+        startBenchmarkButton.setDisable(false);
+        stopBenchmarkButton.setDisable(true);
     }
 
     @FXML
     public void clearConsole() {
         consoleTextArea.clear();
+    }
+
+    public static BenchmarkTabCtrl getInstance() {
+        return instance;
+    }
+
+    public JFXButton getStartBenchmarkButton() {
+        return startBenchmarkButton;
+    }
+
+    public JFXButton getStopBenchmarkButton() {
+        return stopBenchmarkButton;
     }
 }

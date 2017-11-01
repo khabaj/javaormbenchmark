@@ -1,7 +1,12 @@
 package com.khabaj.ormbenchmark.benchmarks;
 
-import org.openjdk.jmh.infra.Blackhole;
-
 public interface UpdateBenchmark extends PersistenceBenchmark {
-    void update1Entity(Blackhole blackhole);
+
+    int NUMBER_OF_ROWS_IN_DB = 100000;
+
+    void update1Entity();
+    void update100Entities();
+    void update1000Entities();
+    void update10000Entities();
+    void update100000Entities();
 }

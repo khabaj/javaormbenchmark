@@ -1,73 +1,44 @@
 package com.khabaj.ormbenchmark.benchmarks.jdbc;
 
-import com.khabaj.ormbenchmark.benchmarks.BaseBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.CreateBenchmark;
-import com.khabaj.ormbenchmark.benchmarks.configuration.DataSourceConfiguration;
-import org.openjdk.jmh.annotations.Setup;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.Level;
+import org.openjdk.jmh.annotations.TearDown;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+public class JDBC_CreateBenchmark extends JdbcBenchmark implements CreateBenchmark {
 
-public class JDBC_CreateBenchmark extends BaseBenchmark implements CreateBenchmark {
-
-    ConfigurableApplicationContext applicationContext;
-    Connection connection;
-
-    @Setup
-    public void setUp() {
-        try {
-            this.applicationContext = new AnnotationConfigApplicationContext(DataSourceConfiguration.class);
-            DataSource dataSource = applicationContext.getBean(DataSource.class);
-            connection = dataSource.getConnection();
-
-            initializeDatabase();
-
-        } catch (Exception e) {
-            if (applicationContext != null) {
-                applicationContext.close();
-            }
-            System.out.println(e.getMessage());
-        }
+    @TearDown(Level.Invocation)
+    public void clearAfterEveryInvocation() {
+        JdbcUtils.clearUserTable(connection);
     }
 
-    private void initializeDatabase() {
-
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement("CREATE TABLE USER (id integer not NULL, " +
-                    " firstName VARCHAR, " +
-                    " lastName VARCHAR, " +
-                    "PRIMARY KEY (id)");
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            JdbcUtils.closeStatement(statement);
-        }
-    }
-
+    @Benchmark
     @Override
     public void insert1Entity() {
-
+        JdbcUtils.performBatchInsert(connection, 1, BATCH_SIZE);
     }
 
+    @Benchmark
     @Override
     public void insert100Entities() {
-
+        JdbcUtils.performBatchInsert(connection, 100, BATCH_SIZE);
     }
 
+    @Benchmark
+    @Override
+    public void insert1000Entities() {
+        JdbcUtils.performBatchInsert(connection, 1000, BATCH_SIZE);
+    }
+
+    @Benchmark
     @Override
     public void insert10000Entities() {
-
+        JdbcUtils.performBatchInsert(connection, 10000, BATCH_SIZE);
     }
 
+    @Benchmark
     @Override
     public void insert100000Entities() {
-
+        JdbcUtils.performBatchInsert(connection, 100000, BATCH_SIZE);
     }
 }
