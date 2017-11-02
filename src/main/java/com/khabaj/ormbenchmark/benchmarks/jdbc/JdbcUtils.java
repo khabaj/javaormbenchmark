@@ -127,4 +127,31 @@ public class JdbcUtils {
             closeStatement(statement);
         }
     }
+
+    public static void performBatchDelete(Connection connection, int rowsToDelete, int batchSize) {
+        PreparedStatement statement = null;
+
+        try {
+            connection.setAutoCommit(false);
+
+            String updateSQL = "DELETE FROM " + USER_TABLE + " WHERE id = ?";
+            statement = connection.prepareStatement(updateSQL);
+
+            for (int i = 0; i < rowsToDelete; i++) {
+                if (i > 0 && i % batchSize == 0) {
+                    statement.executeBatch();
+                    connection.commit();
+                }
+                statement.setInt(1, i);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+            connection.commit();
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeStatement(statement);
+        }
+    }
 }

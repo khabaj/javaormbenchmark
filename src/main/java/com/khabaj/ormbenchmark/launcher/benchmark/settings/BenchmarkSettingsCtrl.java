@@ -97,10 +97,17 @@ public class BenchmarkSettingsCtrl implements Initializable {
         rootItem.setIndependent(true);
 
         benchmarks.forEach((Class clazz) -> {
+
+            CheckBoxTreeItem<String> interfaceItem = new CheckBoxTreeItem<>(clazz.getSimpleName());
+
             Set<Class> benchmarkClasses =
                     ((Set<Class>) reflections.getSubTypesOf(clazz)).stream()
                             .filter((Class el) -> !Modifier.isAbstract(el.getModifiers()))
                             .collect(Collectors.toSet());
+
+            if (benchmarkClasses != null && !benchmarkClasses.isEmpty()) {
+                rootItem.getChildren().add(interfaceItem);
+            }
 
             Arrays.stream(clazz.getDeclaredMethods())
                     .map(Method::getName)
@@ -114,10 +121,9 @@ public class BenchmarkSettingsCtrl implements Initializable {
                         CheckBoxTreeItem<String> benchmarkItem = new CheckBoxTreeItem<>(method);
                         benchmarkItem.getChildren().addAll(list);
                         benchmarkItem.setIndependent(false);
-                        rootItem.getChildren().add(benchmarkItem);
+                        interfaceItem.getChildren().add(benchmarkItem);
                     });
         });
-
         banchmarksTreeView.setCellFactory(CheckBoxTreeCell.<String>forTreeView());
         banchmarksTreeView.setRoot(rootItem);
         banchmarksTreeView.setShowRoot(false);
