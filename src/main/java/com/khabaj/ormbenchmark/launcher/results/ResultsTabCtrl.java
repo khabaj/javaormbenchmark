@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import com.khabaj.ormbenchmark.launcher.Main;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +15,13 @@ import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +48,28 @@ public class ResultsTabCtrl implements Initializable {
         this.instance = this;
         resultsService = ResultsService.getInstance();
         refreshMenu();
+    }
+
+    @FXML
+    public void exportToExcel() {
+
+        File file = showFileChooser();
+
+        if (file != null) {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet(file.getName());
+            XSSFRow header = sheet.createRow(0);
+        }
+    }
+
+    private File showFileChooser() {
+        Stage stage = Main.getPrimaryStage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export Results to Excel");
+        fileChooser.setInitialFileName("Java-Persistence-Benchmark-Results");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Skoroszyt programu Excel",".xlsx"));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        return fileChooser.showSaveDialog(stage);
     }
 
     public void showResults(String resultsDirectoryPath, String selectedBenchmark) {

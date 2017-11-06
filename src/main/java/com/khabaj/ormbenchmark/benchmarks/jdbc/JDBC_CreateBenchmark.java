@@ -9,36 +9,36 @@ public class JDBC_CreateBenchmark extends JdbcBenchmark implements CreateBenchma
 
     @TearDown(Level.Invocation)
     public void clearAfterEveryInvocation() {
-        JdbcUtils.clearUserTable(connection);
+        JdbcUtils.clearTables(connection);
     }
 
     @Benchmark
     @Override
     public void insert1Entity() {
-        JdbcUtils.performBatchInsert(connection, 1, BATCH_SIZE);
+        JdbcUtils.performBatchUsersInsert(connection, 1, BATCH_SIZE);
     }
 
     @Benchmark
     @Override
     public void insert100Entities() {
-        JdbcUtils.performBatchInsert(connection, 100, BATCH_SIZE);
+        JdbcUtils.performBatchUsersInsert(connection, 100, BATCH_SIZE);
     }
 
     @Benchmark
     @Override
     public void insert1000Entities() {
-        JdbcUtils.performBatchInsert(connection, 1000, BATCH_SIZE);
+        JdbcUtils.performBatchUsersInsert(connection, 1000, BATCH_SIZE);
     }
 
     @Benchmark
     @Override
     public void insert10000Entities() {
-        JdbcUtils.performBatchInsert(connection, 10000, BATCH_SIZE);
+        JdbcUtils.performBatchUsersInsert(connection, 10000, BATCH_SIZE);
     }
 
     @Benchmark
     @Override
     public void insert100000Entities() {
-        JdbcUtils.performBatchInsert(connection, 100000, BATCH_SIZE);
+        JdbcUtils.performBatchUsersInsert(connection, 100000, BATCH_SIZE);
     }
 }

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeView;
 import com.khabaj.ormbenchmark.benchmarks.PersistenceBenchmark;
+import com.khabaj.ormbenchmark.launcher.ReflectionsService;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
@@ -16,10 +17,6 @@ import javafx.util.converter.NumberStringConverter;
 import org.apache.commons.lang.StringUtils;
 import org.openjdk.jmh.annotations.Mode;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
-import org.reflections.util.ClasspathHelper;
-import org.reflections.util.ConfigurationBuilder;
-import org.reflections.util.FilterBuilder;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -70,19 +67,8 @@ public class BenchmarkSettingsCtrl implements Initializable {
 
     private void prepareAvailableBenchmarks() {
 
-        final String PACKAGE_TO_SCAN = "com.khabaj.ormbenchmark.benchmarks";
-        final String PACKAGE_TO_EXCLUDE_PATTERN = "com.khabaj.ormbenchmark.benchmarks.*.generated.*";
-
-        ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-                .setUrls(ClasspathHelper.forPackage(PACKAGE_TO_SCAN))
-                .setScanners(new SubTypesScanner())
-                .filterInputsBy(new FilterBuilder.Exclude(PACKAGE_TO_EXCLUDE_PATTERN));
-
-
-        Reflections reflections = new Reflections(configurationBuilder);
-
+        Reflections reflections = ReflectionsService.getInstance().getReflections();
         Set<Class<? extends PersistenceBenchmark>> subtypes = reflections.getSubTypesOf(PersistenceBenchmark.class);
-
         Set<Class<? extends PersistenceBenchmark>> benchmarks = subtypes.stream()
                 .filter(el -> Modifier.isInterface(el.getModifiers()))
                 .collect(Collectors.toSet());

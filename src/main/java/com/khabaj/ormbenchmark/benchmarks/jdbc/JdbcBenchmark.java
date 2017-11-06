@@ -2,7 +2,6 @@ package com.khabaj.ormbenchmark.benchmarks.jdbc;
 
 import com.khabaj.ormbenchmark.benchmarks.BaseBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.configuration.DataSourceConfiguration;
-import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.TearDown;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -15,7 +14,6 @@ public abstract class JdbcBenchmark extends BaseBenchmark {
     ConfigurableApplicationContext applicationContext;
     Connection connection;
 
-    @Setup
     public void setUp() {
         try {
             if (applicationContext == null || connection == null){
@@ -23,8 +21,8 @@ public abstract class JdbcBenchmark extends BaseBenchmark {
                 DataSource dataSource = applicationContext.getBean(DataSource.class);
                 connection = dataSource.getConnection();
 
-                JdbcUtils.dropUserTable(connection);
-                JdbcUtils.createUserTable(connection);
+                JdbcUtils.dropSchema(connection);
+                JdbcUtils.prepareSchema(connection);
             }
 
         } catch (Exception e) {
@@ -37,7 +35,7 @@ public abstract class JdbcBenchmark extends BaseBenchmark {
 
     @TearDown
     public void clear() {
-        JdbcUtils.clearUserTable(connection);
+        JdbcUtils.dropSchema(connection);
         JdbcUtils.closeConnection(connection);
         applicationContext.close();
     }

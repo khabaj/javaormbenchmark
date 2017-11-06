@@ -32,9 +32,6 @@ public abstract class JpaBenchmark extends BaseBenchmark{
 
     @TearDown
     public void clear() {
-        entityManager.getTransaction().begin();
-        entityManager.createQuery("delete from User").executeUpdate();
-        entityManager.getTransaction().commit();
         entityManager.clear();
     }
 

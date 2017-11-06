@@ -12,8 +12,8 @@ public class JDBC_DeleteBenchmark extends JdbcBenchmark implements DeleteBenchma
     @Setup(Level.Invocation)
     public void populateDatabase() {
         if (entitiesCount < 1) {
-            JdbcUtils.clearUserTable(connection);
-            JdbcUtils.performBatchInsert(connection, 100000, BATCH_SIZE);
+            JdbcUtils.clearTables(connection);
+            JdbcUtils.performBatchUsersInsert(connection, 100000, BATCH_SIZE);
             entitiesCount = 100000;
         }
     }
@@ -21,30 +21,30 @@ public class JDBC_DeleteBenchmark extends JdbcBenchmark implements DeleteBenchma
     @Benchmark
     @Override
     public void delete1Entity() {
-        JdbcUtils.performBatchDelete(connection, 1, BATCH_SIZE);
+        JdbcUtils.performBatchUsersDelete(connection, 1, BATCH_SIZE);
     }
 
     @Benchmark
     @Override
     public void delete100Entities() {
-        JdbcUtils.performBatchDelete(connection, 100, BATCH_SIZE);
+        JdbcUtils.performBatchUsersDelete(connection, 100, BATCH_SIZE);
     }
 
     @Benchmark
     @Override
     public void delete1000Entities() {
-        JdbcUtils.performBatchDelete(connection, 1000, BATCH_SIZE);
+        JdbcUtils.performBatchUsersDelete(connection, 1000, BATCH_SIZE);
     }
 
     @Benchmark
     @Override
     public void delete10000Entities() {
-        JdbcUtils.performBatchDelete(connection, 10000, BATCH_SIZE);
+        JdbcUtils.performBatchUsersDelete(connection, 10000, BATCH_SIZE);
     }
 
     @Benchmark
     @Override
     public void delete100000Entities() {
-        JdbcUtils.performBatchDelete(connection, 100000, BATCH_SIZE);
+        JdbcUtils.performBatchUsersDelete(connection, 100000, BATCH_SIZE);
     }
 }

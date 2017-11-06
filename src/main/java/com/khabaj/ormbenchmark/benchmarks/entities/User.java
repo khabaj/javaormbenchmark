@@ -3,23 +3,28 @@ package com.khabaj.ormbenchmark.benchmarks.entities;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
-@Table(name = "user_table")
+@Table(name = "user_table", indexes = {@Index(name = "lastNameIndex", columnList = "lastName")})
+@SequenceGenerator(name="user_sequence", allocationSize=100, sequenceName = "user_sequence")
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private int id;
 
     @Column
     private String firstName;
 
-    @Column
+    @Column(name = "lastName")
     private String lastName;
 
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateDate;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Phone> phones;
 
     public User() {
     }
@@ -64,5 +69,13 @@ public class User {
 
     public void update() {
         this.updateDate = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Set<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(Set<Phone> phones) {
+        this.phones = phones;
     }
 }

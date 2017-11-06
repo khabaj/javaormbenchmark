@@ -10,12 +10,24 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    public static Stage primaryStage;
+
     public static void main(String[] args) {
         launch(args);
     }
 
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void init() throws Exception {
+        ReflectionsService.getInstance().initialize();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Main.fxml"));
             BorderPane rootElement = loader.load();
@@ -32,6 +44,8 @@ public class Main extends Application {
                 Platform.exit();
                 System.exit(0);
             });
+
+            this.primaryStage = primaryStage;
             primaryStage.show();
         } catch (Exception e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

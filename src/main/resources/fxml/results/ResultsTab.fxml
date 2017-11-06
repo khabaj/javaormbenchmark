@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.khabaj.ormbenchmark.launcher.results.ResultsTabCtrl">
    <children>
       <HBox layoutX="110.0" layoutY="142.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -10,7 +13,22 @@
              <fx:include fx:id="resultsMenu" source="ResultsMenu.fxml" />
             <ScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
                <content>
-                  <VBox fx:id="resultsContent" spacing="20.0">
+                  <VBox spacing="10.0">
+                     <children>
+                        <HBox alignment="TOP_RIGHT">
+                           <children>
+                              <JFXButton fx:id="exportToExcelButton" buttonType="RAISED" graphicTextGap="10.0" onAction="#exportToExcel" ripplerFill="WHITE" style="-fx-background-color: rgb(77,152,4);" text="Export to Excel" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="FILE_EXCEL_ALT" size="18.0" />
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                        <VBox fx:id="resultsContent" VBox.vgrow="ALWAYS" />
+                     </children>
                      <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                      </padding>
