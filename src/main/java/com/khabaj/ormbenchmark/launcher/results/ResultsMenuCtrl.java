@@ -42,9 +42,9 @@ public class ResultsMenuCtrl implements Initializable {
         groupResultsListView.getItems().clear();
 
         groupResultsListView.getItems().add("None");
-        groupResultsListView.getItems().add(TableColumns.DATABASE);
-        groupResultsListView.getItems().add(TableColumns.BENCHMARK);
-        groupResultsListView.getItems().add(TableColumns.PERSISTENCE_PROVIDER);
+        groupResultsListView.getItems().add(TableColumn.DATABASE.getColumnName());
+        groupResultsListView.getItems().add(TableColumn.BENCHMARK.getColumnName());
+        groupResultsListView.getItems().add(TableColumn.PERSISTENCE_PROVIDER.getColumnName());
     }
 
     private void prepareResultsList() {

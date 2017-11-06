@@ -17,11 +17,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.AreaReference;
+import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,9 +59,85 @@ public class ResultsTabCtrl implements Initializable {
         File file = showFileChooser();
 
         if (file != null) {
-            XSSFWorkbook workbook = new XSSFWorkbook();
-            XSSFSheet sheet = workbook.createSheet(file.getName());
-            XSSFRow header = sheet.createRow(0);
+
+            try (Workbook workbook = new XSSFWorkbook()) {
+                XSSFSheet sheet = (XSSFSheet) workbook.createSheet();
+
+                // Create
+                XSSFTable table = sheet.createTable();
+                table.setName("Java_Persistence_Benchmark_Table");
+                table.setDisplayName("Java_Persistence_Benchmark_Table");
+
+                // For now, create the initial style in a low-level way
+                table.getCTTable().addNewTableStyleInfo();
+                table.getCTTable().getTableStyleInfo().setName("TableStyleMedium2");
+
+                // Style the table
+                XSSFTableStyleInfo style = (XSSFTableStyleInfo) table.getStyle();
+                style.setName("TableStyleMedium2");
+                style.setFirstColumn(false);
+                style.setLastColumn(false);
+                style.setShowRowStripes(false);
+                style.setShowColumnStripes(true);
+
+                XSSFCell cell;
+                int rowNumber = 0;
+                int cellNumber = 0;
+
+                //prepareHeader
+                XSSFRow headerRow = sheet.createRow(rowNumber++);
+                for (TableColumn tableColumn : TableColumn.values()) {
+                    XSSFCell headerCell = headerRow.createCell(cellNumber++);
+                    headerCell.setCellValue(tableColumn.getColumnName());
+                    table.addColumn();
+                }
+
+                for (Result result : resultsService.getResults()) {
+                    // Create row
+                    XSSFRow row = sheet.createRow(rowNumber++);
+                    cellNumber = 0;
+                    for (TableColumn column : TableColumn.values()) {
+                        // Create cell
+                        cell = row.createCell(cellNumber++);
+                        switch (column) {
+                            case DATABASE:
+                                cell.setCellValue(result.getDatabase());
+                                break;
+                            case BENCHMARK:
+                                cell.setCellValue(result.getOperation());
+                                break;
+                            case PERSISTENCE_PROVIDER:
+                                cell.setCellValue(result.getPersistenceProvider());
+                                break;
+                            case SCORE:
+                                cell.setCellValue(result.getScore());
+                                break;
+                            case SCORE_ERROR:
+                                cell.setCellValue(result.getScoreError());
+                                break;
+                            case UNIT:
+                                cell.setCellValue(result.getScoreUnit());
+                                break;
+                        }
+                    }
+                }
+
+                for (int i=0; i< table.getNumberOfMappedColumns(); i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                // Set which area the table should be placed in
+                AreaReference reference = workbook.getCreationHelper().createAreaReference(
+                        new CellReference(0, 0), new CellReference(resultsService.getResults().size(), TableColumn.values().length - 1));
+                table.setCellReferences(reference);
+
+                // Save
+                try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                    workbook.write(fileOut);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -67,7 +146,7 @@ public class ResultsTabCtrl implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Export Results to Excel");
         fileChooser.setInitialFileName("Java-Persistence-Benchmark-Results");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Skoroszyt programu Excel",".xlsx"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Skoroszyt programu Excel", ".xlsx"));
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         return fileChooser.showSaveDialog(stage);
     }
@@ -82,7 +161,7 @@ public class ResultsTabCtrl implements Initializable {
         label.setFont(new Font("Arial", 24));
         label.setText(selectedBenchmark);
 
-        resultsContent.getChildren().addAll(label,tableView);
+        resultsContent.getChildren().addAll(label, tableView);
     }
 
     private void buildResultsTable() {
@@ -106,7 +185,7 @@ public class ResultsTabCtrl implements Initializable {
 
         List<JFXTreeTableColumn<Result, ?>> tableColumns = new ArrayList<>();
 
-        JFXTreeTableColumn<Result, String> databaseColumn = new JFXTreeTableColumn<>(TableColumns.DATABASE);
+        JFXTreeTableColumn<Result, String> databaseColumn = new JFXTreeTableColumn<>(TableColumn.DATABASE.getColumnName());
         databaseColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, String> param) -> {
             if (databaseColumn.validateValue(param)) {
                 return param.getValue().getValue().databaseProperty();
@@ -116,7 +195,7 @@ public class ResultsTabCtrl implements Initializable {
         });
         tableColumns.add(databaseColumn);
 
-        JFXTreeTableColumn<Result, String> benchmarkColumn = new JFXTreeTableColumn<>(TableColumns.BENCHMARK);
+        JFXTreeTableColumn<Result, String> benchmarkColumn = new JFXTreeTableColumn<>(TableColumn.BENCHMARK.getColumnName());
         benchmarkColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, String> param) -> {
             if (benchmarkColumn.validateValue(param)) {
                 return param.getValue().getValue().operationProperty();
@@ -126,7 +205,7 @@ public class ResultsTabCtrl implements Initializable {
         });
         tableColumns.add(benchmarkColumn);
 
-        JFXTreeTableColumn<Result, String> persistenceProviderColumn = new JFXTreeTableColumn<>(TableColumns.PERSISTENCE_PROVIDER);
+        JFXTreeTableColumn<Result, String> persistenceProviderColumn = new JFXTreeTableColumn<>(TableColumn.PERSISTENCE_PROVIDER.getColumnName());
         persistenceProviderColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, String> param) -> {
             if (persistenceProviderColumn.validateValue(param)) {
                 return param.getValue().getValue().persistenceProviderProperty();
@@ -136,7 +215,7 @@ public class ResultsTabCtrl implements Initializable {
         });
         tableColumns.add(persistenceProviderColumn);
 
-        JFXTreeTableColumn<Result, Number> scoreColumn = new JFXTreeTableColumn<>(TableColumns.SCORE);
+        JFXTreeTableColumn<Result, Number> scoreColumn = new JFXTreeTableColumn<>(TableColumn.SCORE.getColumnName());
         scoreColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, Number> param) -> {
             if (scoreColumn.validateValue(param)) {
                 return param.getValue().getValue().scoreProperty();
@@ -146,7 +225,7 @@ public class ResultsTabCtrl implements Initializable {
         });
         tableColumns.add(scoreColumn);
 
-        JFXTreeTableColumn<Result, Number> scoreErrorColumn = new JFXTreeTableColumn<>(TableColumns.SCORE_ERROR);
+        JFXTreeTableColumn<Result, Number> scoreErrorColumn = new JFXTreeTableColumn<>(TableColumn.SCORE_ERROR.getColumnName());
         scoreErrorColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, Number> param) -> {
             if (scoreErrorColumn.validateValue(param)) {
                 return param.getValue().getValue().scoreErrorProperty();
@@ -156,7 +235,7 @@ public class ResultsTabCtrl implements Initializable {
         });
         tableColumns.add(scoreErrorColumn);
 
-        JFXTreeTableColumn<Result, String> unitColumn = new JFXTreeTableColumn<>(TableColumns.Unit);
+        JFXTreeTableColumn<Result, String> unitColumn = new JFXTreeTableColumn<>(TableColumn.UNIT.getColumnName());
         unitColumn.setCellValueFactory((TreeTableColumn.CellDataFeatures<Result, String> param) -> {
             if (unitColumn.validateValue(param)) {
                 return param.getValue().getValue().scoreUnitProperty();
