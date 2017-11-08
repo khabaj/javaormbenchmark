@@ -64,72 +64,7 @@ public class ResultsTabCtrl implements Initializable {
                 XSSFSheet sheet = (XSSFSheet) workbook.createSheet();
 
                 // Create
-                XSSFTable table = sheet.createTable();
-                table.setName("Java_Persistence_Benchmark_Table");
-                table.setDisplayName("Java_Persistence_Benchmark_Table");
-
-                // For now, create the initial style in a low-level way
-                table.getCTTable().addNewTableStyleInfo();
-                table.getCTTable().getTableStyleInfo().setName("TableStyleMedium2");
-
-                // Style the table
-                XSSFTableStyleInfo style = (XSSFTableStyleInfo) table.getStyle();
-                style.setName("TableStyleMedium2");
-                style.setFirstColumn(false);
-                style.setLastColumn(false);
-                style.setShowRowStripes(false);
-                style.setShowColumnStripes(true);
-
-                XSSFCell cell;
-                int rowNumber = 0;
-                int cellNumber = 0;
-
-                //prepareHeader
-                XSSFRow headerRow = sheet.createRow(rowNumber++);
-                for (TableColumn tableColumn : TableColumn.values()) {
-                    XSSFCell headerCell = headerRow.createCell(cellNumber++);
-                    headerCell.setCellValue(tableColumn.getColumnName());
-                    table.addColumn();
-                }
-
-                for (Result result : resultsService.getResults()) {
-                    // Create row
-                    XSSFRow row = sheet.createRow(rowNumber++);
-                    cellNumber = 0;
-                    for (TableColumn column : TableColumn.values()) {
-                        // Create cell
-                        cell = row.createCell(cellNumber++);
-                        switch (column) {
-                            case DATABASE:
-                                cell.setCellValue(result.getDatabase());
-                                break;
-                            case BENCHMARK:
-                                cell.setCellValue(result.getOperation());
-                                break;
-                            case PERSISTENCE_PROVIDER:
-                                cell.setCellValue(result.getPersistenceProvider());
-                                break;
-                            case SCORE:
-                                cell.setCellValue(result.getScore());
-                                break;
-                            case SCORE_ERROR:
-                                cell.setCellValue(result.getScoreError());
-                                break;
-                            case UNIT:
-                                cell.setCellValue(result.getScoreUnit());
-                                break;
-                        }
-                    }
-                }
-
-                for (int i=0; i< table.getNumberOfMappedColumns(); i++) {
-                    sheet.autoSizeColumn(i);
-                }
-
-                // Set which area the table should be placed in
-                AreaReference reference = workbook.getCreationHelper().createAreaReference(
-                        new CellReference(0, 0), new CellReference(resultsService.getResults().size(), TableColumn.values().length - 1));
-                table.setCellReferences(reference);
+                createTable(sheet);
 
                 // Save
                 try (FileOutputStream fileOut = new FileOutputStream(file)) {
@@ -139,6 +74,75 @@ public class ResultsTabCtrl implements Initializable {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void createTable(XSSFSheet sheet) {
+        XSSFTable table = sheet.createTable();
+        table.setName("Java_Persistence_Benchmark_Table");
+        table.setDisplayName("Java_Persistence_Benchmark_Table");
+
+        // For now, create the initial style in a low-level way
+        table.getCTTable().addNewTableStyleInfo();
+        table.getCTTable().getTableStyleInfo().setName("TableStyleMedium2");
+
+        // Style the table
+        XSSFTableStyleInfo style = (XSSFTableStyleInfo) table.getStyle();
+        style.setName("TableStyleMedium2");
+        style.setFirstColumn(false);
+        style.setLastColumn(false);
+        style.setShowRowStripes(false);
+        style.setShowColumnStripes(true);
+
+        XSSFCell cell;
+        int rowNumber = 0;
+        int cellNumber = 0;
+
+        //prepareHeader
+        XSSFRow headerRow = sheet.createRow(rowNumber++);
+        for (TableColumn tableColumn : TableColumn.values()) {
+            XSSFCell headerCell = headerRow.createCell(cellNumber++);
+            headerCell.setCellValue(tableColumn.getColumnName());
+            table.addColumn();
+        }
+
+        for (Result result : resultsService.getResults()) {
+            // Create row
+            XSSFRow row = sheet.createRow(rowNumber++);
+            cellNumber = 0;
+            for (TableColumn column : TableColumn.values()) {
+                // Create cell
+                cell = row.createCell(cellNumber++);
+                switch (column) {
+                    case DATABASE:
+                        cell.setCellValue(result.getDatabase());
+                        break;
+                    case BENCHMARK:
+                        cell.setCellValue(result.getOperation());
+                        break;
+                    case PERSISTENCE_PROVIDER:
+                        cell.setCellValue(result.getPersistenceProvider());
+                        break;
+                    case SCORE:
+                        cell.setCellValue(result.getScore());
+                        break;
+                    case SCORE_ERROR:
+                        cell.setCellValue(result.getScoreError());
+                        break;
+                    case UNIT:
+                        cell.setCellValue(result.getScoreUnit());
+                        break;
+                }
+            }
+        }
+
+        for (int i=0; i< table.getNumberOfMappedColumns(); i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        // Set which area the table should be placed in
+        AreaReference reference = sheet.getWorkbook().getCreationHelper().createAreaReference(
+                new CellReference(0, 0), new CellReference(resultsService.getResults().size(), TableColumn.values().length - 1));
+        table.setCellReferences(reference);
     }
 
     private File showFileChooser() {

@@ -69,9 +69,6 @@ public class Hibernate_DeleteBenchmark extends HibernateBenchmark implements Del
             if (i > 0 && i % BATCH_SIZE == 0) {
                 session.flush();
                 session.clear();
-
-                session.getTransaction().commit();
-                session.getTransaction().begin();
             }
             User user = users.get(entitiesCount - 1);
             user = (User) session.merge(user);

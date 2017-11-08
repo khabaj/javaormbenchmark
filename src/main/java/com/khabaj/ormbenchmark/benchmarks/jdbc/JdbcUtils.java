@@ -7,6 +7,31 @@ public class JdbcUtils {
     public final static String USER_TABLE = "user_table";
     public final static String PHONE_TABLE = "phone";
 
+    public final static String CREATE_USER_TABLE_SQL =
+            "CREATE TABLE " + USER_TABLE + "(" +
+                    "id integer not NULL, " +
+                    " firstName VARCHAR(50), " +
+                    " lastName VARCHAR(50) , " +
+                    " updateDate TIMESTAMP, " +
+                    " PRIMARY KEY (id)) ";
+
+    public final static String CREATE_PHONE_TABLE_SQL =
+            "CREATE TABLE " + PHONE_TABLE + " (id integer not NULL, " +
+                    " phoneNumber VARCHAR(20), " +
+                    " userId INTEGER , " +
+                    " PRIMARY KEY (id), " +
+                    " FOREIGN KEY (userId) REFERENCES user_table(id))";
+
+    public final static String CREATE_INDEX_SQL = "CREATE INDEX lastNameIndex ON " + USER_TABLE + " (lastName)";
+    public final static String INSERT_USER_SQL = "INSERT INTO " + USER_TABLE + " (id, firstName, lastName, updateDate) VALUES (?,?,?,?)";
+    public final static String INSERT_PHONE_SQL = "INSERT INTO " + PHONE_TABLE + " (id, phoneNumber, userId) VALUES (?,?,?)";
+    public final static String DROP_USER_TABLE_SQL = "DROP TABLE " + USER_TABLE;
+    public final static String DROP_PHONE_TABLE_SQL = "DROP TABLE " + PHONE_TABLE;
+    public final static String DELETE_ALL_FROM_USER_TABLE_SQL = "DELETE FROM " + USER_TABLE;
+    public final static String DELETE_ALL_FROM_PHONE_TABLE_SQL = "DELETE FROM " + PHONE_TABLE;
+
+    public final static String UPDATE_USER_TABLE_SQL = "UPDATE " + USER_TABLE + " SET updateDate = ? WHERE id = ?";
+
     public static void closeStatement(Statement statement) {
         try {
             if (statement != null)
@@ -62,13 +87,9 @@ public class JdbcUtils {
         PreparedStatement statement = null;
         try {
             // id is not auto incrementing
-            statement = connection.prepareStatement("CREATE TABLE " + USER_TABLE + " (id integer not NULL, " +
-                    " firstName VARCHAR(50), " +
-                    " lastName VARCHAR(50) , " +
-                    " updateDate TIMESTAMP, " +
-                    "PRIMARY KEY (id))");
+            statement = connection.prepareStatement(CREATE_USER_TABLE_SQL);
             statement.executeUpdate();
-            statement = connection.prepareStatement("CREATE INDEX lastNameIndex ON " + USER_TABLE +"(lastName)");
+            statement = connection.prepareStatement(CREATE_INDEX_SQL);
             statement.executeUpdate();
         } finally {
             closeStatement(statement);
@@ -80,11 +101,7 @@ public class JdbcUtils {
         PreparedStatement statement = null;
         try {
             // id is not auto incrementing
-            statement = connection.prepareStatement("CREATE TABLE " + PHONE_TABLE + " (id integer not NULL, " +
-                    " phoneNumber VARCHAR(20), " +
-                    " userId INTEGER , " +
-                    "PRIMARY KEY (id), " +
-                    "FOREIGN KEY (userId) REFERENCES user_table(id))");
+            statement = connection.prepareStatement(CREATE_PHONE_TABLE_SQL);
             statement.executeUpdate();
         } finally {
             closeStatement(statement);
@@ -114,16 +131,12 @@ public class JdbcUtils {
         PreparedStatement statement = null;
 
         try {
-            connection.setAutoCommit(false);
-
-            String insertSQL = "INSERT INTO " + USER_TABLE + " (id, firstName, lastName, updateDate) VALUES (?,?,?,?)";
-            statement = connection.prepareStatement(insertSQL);
+            statement = connection.prepareStatement(INSERT_USER_SQL);
 
             for (int i = 1; i <=rowsNumber; i++) {
 
                 if (i % batchSize == 0) {
                     statement.executeBatch();
-                    connection.commit();
                 }
                 statement.setInt(1, i);
                 statement.setString(2, "FirstName" + i);
@@ -132,8 +145,6 @@ public class JdbcUtils {
                 statement.addBatch();
             }
             statement.executeBatch();
-            connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -145,51 +156,17 @@ public class JdbcUtils {
         PreparedStatement statement = null;
 
         try {
-            connection.setAutoCommit(false);
-
-            String updateSQL = "UPDATE " + USER_TABLE + " SET updateDate = ? WHERE id = ?";
-            statement = connection.prepareStatement(updateSQL);
+            statement = connection.prepareStatement(UPDATE_USER_TABLE_SQL);
 
             for (int i = 1; i <= rowsToUpdate; i++) {
                 if (i % batchSize == 0) {
                     statement.executeBatch();
-                    connection.commit();
-
                 }
                 statement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
                 statement.setInt(2, i);
                 statement.addBatch();
             }
             statement.executeBatch();
-            connection.commit();
-            connection.setAutoCommit(true);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeStatement(statement);
-        }
-    }
-
-    public static void performBatchUsersDelete(Connection connection, int rowsToDelete, int batchSize) {
-        PreparedStatement statement = null;
-
-        try {
-            connection.setAutoCommit(false);
-
-            String updateSQL = "DELETE FROM " + USER_TABLE + " WHERE id = ?";
-            statement = connection.prepareStatement(updateSQL);
-
-            for (int i = 1; i <= rowsToDelete; i++) {
-                if (i % batchSize == 0) {
-                    statement.executeBatch();
-                    connection.commit();
-                }
-                statement.setInt(1, i);
-                statement.addBatch();
-            }
-            statement.executeBatch();
-            connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -203,16 +180,13 @@ public class JdbcUtils {
         int phoneId = 1;
 
         try {
-            connection.setAutoCommit(false);
 
-            String insertSQL = "INSERT INTO " + PHONE_TABLE + " (id, phoneNumber, userId) VALUES (?,?,?)";
-            statement = connection.prepareStatement(insertSQL);
+            statement = connection.prepareStatement(INSERT_PHONE_SQL);
 
             for (int i = 1; i <= parentRowsNumbers; i++) {
                 for (int j = 1; j <= 3; j++) {
                     if (phoneId > 0 && phoneId % batchSize == 0) {
                         statement.executeBatch();
-                        connection.commit();
                     }
                     statement.setInt(1, phoneId++);
                     statement.setString(2, generatePhoneNumber(String.valueOf(i),String.valueOf(j)));
@@ -221,8 +195,6 @@ public class JdbcUtils {
                 }
             }
             statement.executeBatch();
-            connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

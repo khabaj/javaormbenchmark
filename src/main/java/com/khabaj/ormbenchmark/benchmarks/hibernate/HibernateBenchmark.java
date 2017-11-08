@@ -46,9 +46,6 @@ public abstract class HibernateBenchmark extends BaseBenchmark {
             if (i > 0 && i % BATCH_SIZE == 0) {
                 session.flush();
                 session.clear();
-
-                session.getTransaction().commit();
-                session.getTransaction().begin();
             }
             User user = new User("John" + i, "LastName" + i);
             session.persist(user);
@@ -64,9 +61,6 @@ public abstract class HibernateBenchmark extends BaseBenchmark {
             if (i > 0 && i % BATCH_SIZE == 0) {
                 session.flush();
                 session.clear();
-
-                session.getTransaction().commit();
-                session.getTransaction().begin();
             }
             User user = new User("FirstName" + i, "LastName" + i);
             assignPhones(user, String.valueOf(i));
