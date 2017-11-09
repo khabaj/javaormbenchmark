@@ -19,7 +19,7 @@ public class SpringData_ReadBenchmark extends SpringData_Benchmark implements Re
     public void prepare(Blackhole blackhole) {
         this.blackhole = blackhole;
         userRepository.deleteAll();
-        batchInsertUsersWithPhones(100000);
+        batchInsertUsersWithPhones(NUMBER_OF_ROWS_IN_DB);
     }
 
     @Setup(Level.Invocation)
