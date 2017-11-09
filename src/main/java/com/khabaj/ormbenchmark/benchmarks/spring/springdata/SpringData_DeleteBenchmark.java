@@ -1,15 +1,15 @@
-package com.khabaj.ormbenchmark.benchmarks.hibernate;
+package com.khabaj.ormbenchmark.benchmarks.spring.springdata;
 
 import com.khabaj.ormbenchmark.benchmarks.DeleteBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.entities.User;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
-import org.openjdk.jmh.annotations.TearDown;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Hibernate_DeleteBenchmark extends HibernateBenchmark implements DeleteBenchmark {
+public class SpringData_DeleteBenchmark extends SpringData_Benchmark implements DeleteBenchmark {
 
     List<User> users;
     int entitiesCount = 0;
@@ -17,25 +17,17 @@ public class Hibernate_DeleteBenchmark extends HibernateBenchmark implements Del
     @Setup(Level.Invocation)
     public void populateDatabase() {
         if (entitiesCount < 1) {
-            session.getTransaction().begin();
-            session.createQuery("delete from User").executeUpdate();
-            session.getTransaction().commit();
-            performBatchInsert(100000);
+            userRepository.deleteAllInBatch();
+            batchInsertUsers(100000);
             entitiesCount = 100000;
-            users = getUsers();
-            session.clear();
+            users = userRepository.findAll();
         }
-    }
-
-    @TearDown(Level.Invocation)
-    public void clearSession() {
-        session.clear();
     }
 
     @Benchmark
     @Override
     public void delete1Entity() {
-        performBatchDelete(1);
+        userRepository.delete(entitiesCount);
     }
 
     @Benchmark
@@ -63,17 +55,16 @@ public class Hibernate_DeleteBenchmark extends HibernateBenchmark implements Del
     }
 
     private void performBatchDelete(int rowsToDelete) {
-
-        session.getTransaction().begin();
+        List<User> usersToDelete = new ArrayList<>();
         for (int i = 0; i < rowsToDelete; i++) {
-            if (i > 0 && i % BATCH_SIZE == 0) {
-                session.flush();
-                session.clear();
+            if (i % BATCH_SIZE == 0) {
+                userRepository.delete(usersToDelete);
+                usersToDelete.clear();
             }
             User user = users.get(entitiesCount - 1);
-            session.remove(user);
+            usersToDelete.add(user);
             entitiesCount--;
         }
-        session.getTransaction().commit();
+        userRepository.delete(usersToDelete);
     }
 }

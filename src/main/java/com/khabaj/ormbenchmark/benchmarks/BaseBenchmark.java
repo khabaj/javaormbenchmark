@@ -5,5 +5,5 @@ import org.openjdk.jmh.annotations.State;
 
 @State(Scope.Benchmark)
 public abstract class BaseBenchmark {
-    public final int BATCH_SIZE = 10000;
+    public final int BATCH_SIZE = 1000;
 }

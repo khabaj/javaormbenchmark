@@ -1,9 +1,12 @@
 package com.khabaj.ormbenchmark.benchmarks.entities;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 
 @Entity
 @SequenceGenerator(name="phone_sequence", allocationSize=100, sequenceName = "phone_sequence")
+@BatchSize(size = 1000)
 public class Phone {
 
     @Id

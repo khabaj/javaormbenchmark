@@ -1,5 +1,7 @@
 package com.khabaj.ormbenchmark.benchmarks.entities;
 
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -8,6 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "user_table", indexes = {@Index(name = "lastNameIndex", columnList = "lastName")})
 @SequenceGenerator(name="user_sequence", allocationSize=100, sequenceName = "user_sequence")
+@BatchSize(size = 1000)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")

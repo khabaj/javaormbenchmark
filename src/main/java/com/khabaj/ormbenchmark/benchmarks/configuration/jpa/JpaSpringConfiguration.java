@@ -46,7 +46,10 @@ public class JpaSpringConfiguration {
                 jpaPropertyMap.put("openjpa.RuntimeUnenhancedClasses", "unsupported");
                 jpaPropertyMap.put("openjpa.DynamicEnhancementAgent", "true");
                 jpaPropertyMap.put("javax.persistence.schema-generation.database.action", "drop-and-create");
-                jpaPropertyMap.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(SchemaAction='dropDB,add')");
+                jpaPropertyMap.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true,schemaAction='add')");
+                jpaPropertyMap.put("openjpa.jdbc.SchemaFactory", "native(foreignKeys=true)");
+
+                jpaPropertyMap.put("openjpa.jdbc.MappingDefaults", "ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict");
                 break;
             default:
                 jpaVendorAdapter = new HibernateJpaVendorAdapter();
