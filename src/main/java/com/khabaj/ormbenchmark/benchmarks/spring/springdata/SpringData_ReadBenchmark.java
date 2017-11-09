@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 
 public class SpringData_ReadBenchmark extends SpringData_Benchmark implements ReadBenchmark {
-    final int ROWS_IN_DB = 100000;
+
     int wantedUserId;
     Blackhole blackhole;
 
@@ -24,7 +24,7 @@ public class SpringData_ReadBenchmark extends SpringData_Benchmark implements Re
 
     @Setup(Level.Invocation)
     public void randomUserId() {
-        this.wantedUserId = new Random().nextInt(ROWS_IN_DB);
+        this.wantedUserId = new Random().nextInt(NUMBER_OF_ROWS_IN_DB);
     }
 
     @Benchmark

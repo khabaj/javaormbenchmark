@@ -43,9 +43,4 @@ public class Hibernate_CreateBenchmark extends HibernateBenchmark implements Cre
         performBatchInsert(10000);
     }
 
-    @Benchmark
-    @Override
-    public void insert100000Entities() {
-        performBatchInsert(100000);
-    }
 }

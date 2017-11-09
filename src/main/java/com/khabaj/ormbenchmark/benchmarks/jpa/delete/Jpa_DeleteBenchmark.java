@@ -21,8 +21,8 @@ public abstract class Jpa_DeleteBenchmark extends JpaBenchmark implements Delete
             entityManager.getTransaction().begin();
             entityManager.createQuery("delete from User").executeUpdate();
             entityManager.getTransaction().commit();
-            performBatchInsert(100000);
-            entitiesCount = 100000;
+            performBatchInsert(NUMBER_OF_ROWS_IN_DB);
+            entitiesCount = NUMBER_OF_ROWS_IN_DB;
             users = getUsers();
             entityManager.clear();
         }
@@ -55,12 +55,6 @@ public abstract class Jpa_DeleteBenchmark extends JpaBenchmark implements Delete
     @Override
     public void delete10000Entities() {
         performBatchDelete(10000);
-    }
-
-    @Benchmark
-    @Override
-    public void delete100000Entities() {
-        performBatchDelete(100000);
     }
 
     private void performBatchDelete(int rowsToDelete) {

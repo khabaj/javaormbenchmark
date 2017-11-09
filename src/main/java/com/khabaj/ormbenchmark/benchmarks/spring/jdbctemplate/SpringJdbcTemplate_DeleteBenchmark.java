@@ -21,8 +21,8 @@ public class SpringJdbcTemplate_DeleteBenchmark extends SpringJdbcTemplate_Bench
     @Setup(Level.Invocation)
     public void populateDatabase() {
         if (entitiesCount < 1) {
-            batchInsertUsers(100000);
-            entitiesCount = 100000;
+            batchInsertUsers(NUMBER_OF_ROWS_IN_DB);
+            entitiesCount = NUMBER_OF_ROWS_IN_DB;
         }
     }
 
@@ -48,12 +48,6 @@ public class SpringJdbcTemplate_DeleteBenchmark extends SpringJdbcTemplate_Bench
     @Override
     public void delete10000Entities() {
         batchDeleteUsers(10000);
-    }
-
-    @Benchmark
-    @Override
-    public void delete100000Entities() {
-        batchDeleteUsers(100000);
     }
 
     private void batchDeleteUsers(int rowsNumber) {

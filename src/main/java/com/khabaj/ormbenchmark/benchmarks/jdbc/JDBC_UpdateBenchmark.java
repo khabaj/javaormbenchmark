@@ -9,7 +9,7 @@ public class JDBC_UpdateBenchmark extends JdbcBenchmark implements UpdateBenchma
     @Setup
     public void populateDatabase() {
         super.setUp();
-        JdbcUtils.performBatchUsersInsert(connection, 100000, BATCH_SIZE);
+        JdbcUtils.performBatchUsersInsert(connection, NUMBER_OF_ROWS_IN_DB, BATCH_SIZE);
     }
 
     @Benchmark
@@ -36,9 +36,4 @@ public class JDBC_UpdateBenchmark extends JdbcBenchmark implements UpdateBenchma
         JdbcUtils.performBatchUsersUpdate(connection, 10000, BATCH_SIZE);
     }
 
-    @Benchmark
-    @Override
-    public void update100000Entities() {
-        JdbcUtils.performBatchUsersUpdate(connection, 100000, BATCH_SIZE);
-    }
 }

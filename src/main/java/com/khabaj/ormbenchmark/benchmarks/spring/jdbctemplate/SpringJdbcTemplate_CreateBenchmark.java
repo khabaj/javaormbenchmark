@@ -43,9 +43,4 @@ public class SpringJdbcTemplate_CreateBenchmark extends SpringJdbcTemplate_Bench
         batchInsertUsers(10000);
     }
 
-    @Benchmark
-    @Override
-    public void insert100000Entities() {
-        batchInsertUsers(100000);
-    }
 }

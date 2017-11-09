@@ -14,7 +14,6 @@ import java.util.Random;
 
 public class SpringJdbcTemplate_ReadBenchmark extends SpringJdbcTemplate_Benchmark implements ReadBenchmark {
 
-    final int ROWS_IN_DB = 100000;
     int wantedUserId;
     Blackhole blackhole;
 
@@ -22,13 +21,13 @@ public class SpringJdbcTemplate_ReadBenchmark extends SpringJdbcTemplate_Benchma
     public void populateDatabase(Blackhole blackhole) {
         this.blackhole = blackhole;
         super.setUp();
-        batchInsertUsers(100000);
-        batchInsertPhones(100000);
+        batchInsertUsers(NUMBER_OF_ROWS_IN_DB);
+        batchInsertPhones(NUMBER_OF_ROWS_IN_DB);
     }
 
     @Setup(Level.Invocation)
     public void randomUserId() {
-        this.wantedUserId = new Random().nextInt(ROWS_IN_DB);
+        this.wantedUserId = new Random().nextInt(NUMBER_OF_ROWS_IN_DB);
     }
 
     @Benchmark

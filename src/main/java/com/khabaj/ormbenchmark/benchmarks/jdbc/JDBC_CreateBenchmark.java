@@ -58,9 +58,4 @@ public class JDBC_CreateBenchmark extends JdbcBenchmark implements CreateBenchma
         JdbcUtils.performBatchUsersInsert(connection, 10000, BATCH_SIZE);
     }
 
-    @Benchmark
-    @Override
-    public void insert100000Entities() {
-        JdbcUtils.performBatchUsersInsert(connection, 100000, BATCH_SIZE);
-    }
 }

@@ -44,9 +44,4 @@ public abstract class Jpa_CreateBenchmark extends JpaBenchmark implements Create
         performBatchInsert(10000);
     }
 
-    @Benchmark
-    @Override
-    public void insert100000Entities() {
-        performBatchInsert(100000);
-    }
 }

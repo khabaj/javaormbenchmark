@@ -22,8 +22,8 @@ public class JDBC_DeleteBenchmark extends JdbcBenchmark implements DeleteBenchma
     public void populateDatabase() {
         if (entitiesCount < 1) {
             JdbcUtils.clearTables(connection);
-            JdbcUtils.performBatchUsersInsert(connection, 100000, BATCH_SIZE);
-            entitiesCount = 100000;
+            JdbcUtils.performBatchUsersInsert(connection, NUMBER_OF_ROWS_IN_DB, BATCH_SIZE);
+            entitiesCount = NUMBER_OF_ROWS_IN_DB;
         }
     }
 
@@ -49,12 +49,6 @@ public class JDBC_DeleteBenchmark extends JdbcBenchmark implements DeleteBenchma
     @Override
     public void delete10000Entities() {
         performBatchUsersDelete(connection, 10000, BATCH_SIZE);
-    }
-
-    @Benchmark
-    @Override
-    public void delete100000Entities() {
-        performBatchUsersDelete(connection, 100000, BATCH_SIZE);
     }
 
     private void performBatchUsersDelete(Connection connection, int rowsToDelete, int batchSize) {

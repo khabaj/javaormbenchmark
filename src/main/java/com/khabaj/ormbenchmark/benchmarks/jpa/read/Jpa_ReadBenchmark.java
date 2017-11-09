@@ -18,19 +18,18 @@ import java.util.Set;
 
 public abstract class Jpa_ReadBenchmark extends JpaBenchmark implements ReadBenchmark {
 
-    final int ROWS_IN_DB = 100000;
     int wantedUserId;
     Blackhole blackhole;
 
     @Setup
     public void prepare(Blackhole blackhole) {
         this.blackhole = blackhole;
-        batchInsertUsersWithPhones(ROWS_IN_DB);
+        batchInsertUsersWithPhones(NUMBER_OF_ROWS_IN_DB);
     }
 
     @Setup(Level.Invocation)
     public void randomUserId() {
-        this.wantedUserId = new Random().nextInt(ROWS_IN_DB);
+        this.wantedUserId = new Random().nextInt(NUMBER_OF_ROWS_IN_DB);
     }
 
     @TearDown(Level.Invocation)

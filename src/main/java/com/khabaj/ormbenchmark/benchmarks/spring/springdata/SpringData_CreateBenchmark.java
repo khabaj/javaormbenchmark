@@ -36,10 +36,4 @@ public class SpringData_CreateBenchmark extends SpringData_Benchmark implements 
     public void insert10000Entities() {
         batchInsertUsers(10000);
     }
-
-    @Benchmark
-    @Override
-    public void insert100000Entities() {
-        batchInsertUsers(100000);
-    }
 }

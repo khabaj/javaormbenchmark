@@ -6,5 +6,4 @@ public interface CreateBenchmark extends PersistenceBenchmark{
     void insert100Entities();
     void insert1000Entities();
     void insert10000Entities();
-    void insert100000Entities();
 }

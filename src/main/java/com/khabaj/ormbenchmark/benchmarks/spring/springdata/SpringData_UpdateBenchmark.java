@@ -14,7 +14,7 @@ public class SpringData_UpdateBenchmark extends SpringData_Benchmark implements 
     @Setup
     public void populateDatabase() {
         userRepository.deleteAll();
-        batchInsertUsers(100000);
+        batchInsertUsers(NUMBER_OF_ROWS_IN_DB);
         users = userRepository.findAll();
     }
 
@@ -40,12 +40,6 @@ public class SpringData_UpdateBenchmark extends SpringData_Benchmark implements 
     @Benchmark
     public void update10000Entities() {
         performBatchUpdate(10000);
-    }
-
-    @Override
-    @Benchmark
-    public void update100000Entities() {
-        performBatchUpdate(100000);
     }
 
     private void performBatchUpdate(int rowsToUpdate) {

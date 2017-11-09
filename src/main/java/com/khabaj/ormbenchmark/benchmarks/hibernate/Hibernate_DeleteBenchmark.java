@@ -20,8 +20,8 @@ public class Hibernate_DeleteBenchmark extends HibernateBenchmark implements Del
             session.getTransaction().begin();
             session.createQuery("delete from User").executeUpdate();
             session.getTransaction().commit();
-            performBatchInsert(100000);
-            entitiesCount = 100000;
+            performBatchInsert(NUMBER_OF_ROWS_IN_DB);
+            entitiesCount = NUMBER_OF_ROWS_IN_DB;
             users = getUsers();
             session.clear();
         }
@@ -54,12 +54,6 @@ public class Hibernate_DeleteBenchmark extends HibernateBenchmark implements Del
     @Override
     public void delete10000Entities() {
         performBatchDelete(10000);
-    }
-
-    @Benchmark
-    @Override
-    public void delete100000Entities() {
-        performBatchDelete(100000);
     }
 
     private void performBatchDelete(int rowsToDelete) {

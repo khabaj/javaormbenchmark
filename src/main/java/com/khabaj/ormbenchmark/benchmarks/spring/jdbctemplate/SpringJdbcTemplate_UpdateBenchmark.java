@@ -15,7 +15,7 @@ public class SpringJdbcTemplate_UpdateBenchmark extends SpringJdbcTemplate_Bench
     @Setup
     public void populateDatabase() {
         super.setUp();
-        batchInsertUsers(100000);
+        batchInsertUsers(NUMBER_OF_ROWS_IN_DB);
     }
 
     @Benchmark
@@ -40,12 +40,6 @@ public class SpringJdbcTemplate_UpdateBenchmark extends SpringJdbcTemplate_Bench
     @Override
     public void update10000Entities() {
         batchUpdateUsers(10000);
-    }
-
-    @Benchmark
-    @Override
-    public void update100000Entities() {
-        batchUpdateUsers(100000);
     }
 
     private void batchUpdateUsers(int rowsNumber) {

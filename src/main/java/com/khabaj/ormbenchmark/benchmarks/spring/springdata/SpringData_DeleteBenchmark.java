@@ -18,8 +18,8 @@ public class SpringData_DeleteBenchmark extends SpringData_Benchmark implements 
     public void populateDatabase() {
         if (entitiesCount < 1) {
             userRepository.deleteAllInBatch();
-            batchInsertUsers(100000);
-            entitiesCount = 100000;
+            batchInsertUsers(NUMBER_OF_ROWS_IN_DB);
+            entitiesCount = NUMBER_OF_ROWS_IN_DB;
             users = userRepository.findAll();
         }
     }
@@ -46,12 +46,6 @@ public class SpringData_DeleteBenchmark extends SpringData_Benchmark implements 
     @Override
     public void delete10000Entities() {
         performBatchDelete(10000);
-    }
-
-    @Benchmark
-    @Override
-    public void delete100000Entities() {
-        performBatchDelete(100000);
     }
 
     private void performBatchDelete(int rowsToDelete) {

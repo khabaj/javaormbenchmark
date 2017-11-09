@@ -52,12 +52,6 @@ public class Hibernate_UpdateBenchmark extends HibernateBenchmark implements Upd
         performBatchUpdate(10000);
     }
 
-    @Override
-    @Benchmark
-    public void update100000Entities() {
-        performBatchUpdate(100000);
-    }
-
     private void performBatchUpdate(int rowsToUpdate) {
         session.getTransaction().begin();
 

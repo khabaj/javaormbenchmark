@@ -13,7 +13,6 @@ import java.util.Random;
 
 public class JDBC_ReadBenchmark extends JdbcBenchmark implements ReadBenchmark {
 
-    final int ROWS_IN_DB = 100000;
     int wantedUserId;
     Blackhole blackhole;
 
@@ -21,13 +20,13 @@ public class JDBC_ReadBenchmark extends JdbcBenchmark implements ReadBenchmark {
     public void populateDatabase(Blackhole blackhole) {
         this.blackhole = blackhole;
         super.setUp();
-        JdbcUtils.performBatchUsersInsert(connection, 100000, BATCH_SIZE);
+        JdbcUtils.performBatchUsersInsert(connection, NUMBER_OF_ROWS_IN_DB, BATCH_SIZE);
         JdbcUtils.performBatchPhonesInsert(connection, 100000, BATCH_SIZE);
     }
 
     @Setup(Level.Invocation)
     public void randomUserId() {
-        this.wantedUserId = new Random().nextInt(ROWS_IN_DB);
+        this.wantedUserId = new Random().nextInt(NUMBER_OF_ROWS_IN_DB);
     }
 
     @Benchmark
