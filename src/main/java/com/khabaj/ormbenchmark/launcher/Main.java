@@ -35,7 +35,7 @@ public class Main extends Application {
             Scene scene = new Scene(rootElement, 600, 400);
             scene.getStylesheets().add(getClass().getResource("/fxml/styles.css").toExternalForm());
 
-            primaryStage.setTitle("Java ORM Benchmark");
+            primaryStage.setTitle("Java Persistence Benchmark");
             primaryStage.setMinWidth(1200);
             primaryStage.setMinHeight(800);
             primaryStage.setScene(scene);

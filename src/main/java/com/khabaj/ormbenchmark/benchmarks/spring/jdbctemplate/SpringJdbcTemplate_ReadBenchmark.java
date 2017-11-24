@@ -27,7 +27,7 @@ public class SpringJdbcTemplate_ReadBenchmark extends SpringJdbcTemplate_Benchma
 
     @Setup(Level.Invocation)
     public void randomUserId() {
-        this.wantedUserId = new Random().nextInt(NUMBER_OF_ROWS_IN_DB);
+        this.wantedUserId = new Random().nextInt(NUMBER_OF_ROWS_IN_DB - 1) + 1;
     }
 
     @Benchmark

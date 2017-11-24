@@ -3,6 +3,7 @@ package com.khabaj.ormbenchmark.benchmarks.configuration;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -21,6 +22,7 @@ import java.util.Properties;
         "com.khabaj.ormbenchmark.benchmarks.spring.springdata.repositories"
 })
 @EnableTransactionManagement
+@ComponentScan(basePackages = "com.khabaj.ormbenchmark.benchmarks.spring.springdata")
 public class SpringDataConfiguration {
 
     @Autowired
@@ -31,9 +33,11 @@ public class SpringDataConfiguration {
 
         Properties properties = new Properties();
         properties.put(AvailableSettings.HBM2DDL_AUTO, "create-drop");
-        properties.put(AvailableSettings.STATEMENT_BATCH_SIZE, "1000");
+        //properties.put(AvailableSettings.SHOW_SQL, "true");
+        properties.put(AvailableSettings.STATEMENT_BATCH_SIZE, "100");
         properties.put(AvailableSettings.ORDER_INSERTS, "true");
         properties.put(AvailableSettings.ORDER_UPDATES, "true");
+        properties.put(AvailableSettings.BATCH_VERSIONED_DATA, "true");
 
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());

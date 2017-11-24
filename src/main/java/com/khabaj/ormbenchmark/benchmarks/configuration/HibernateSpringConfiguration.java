@@ -30,6 +30,11 @@ public class HibernateSpringConfiguration {
     Properties hibernateProperties() {
         Properties properties = new Properties();
         properties.put(AvailableSettings.HBM2DDL_AUTO, "create-drop");
+        //properties.put(AvailableSettings.SHOW_SQL, "true");
+        properties.put(AvailableSettings.STATEMENT_BATCH_SIZE, "100");
+        properties.put(AvailableSettings.ORDER_INSERTS, "true");
+        properties.put(AvailableSettings.ORDER_UPDATES, "true");
+        properties.put(AvailableSettings.BATCH_VERSIONED_DATA, "true");
         return properties;
     }
 }

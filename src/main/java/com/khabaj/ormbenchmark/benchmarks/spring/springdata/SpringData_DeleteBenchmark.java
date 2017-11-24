@@ -27,8 +27,7 @@ public class SpringData_DeleteBenchmark extends SpringData_Benchmark implements 
     @Benchmark
     @Override
     public void delete1Entity() {
-        userRepository.delete(entitiesCount);
-        entitiesCount--;
+        performBatchDelete(1);
     }
 
     @Benchmark

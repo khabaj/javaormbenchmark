@@ -29,7 +29,7 @@ public abstract class Jpa_ReadBenchmark extends JpaBenchmark implements ReadBenc
 
     @Setup(Level.Invocation)
     public void randomUserId() {
-        this.wantedUserId = new Random().nextInt(NUMBER_OF_ROWS_IN_DB);
+        this.wantedUserId = new Random().nextInt(NUMBER_OF_ROWS_IN_DB - 1) + 1;
     }
 
     @TearDown(Level.Invocation)

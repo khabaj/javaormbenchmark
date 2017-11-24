@@ -7,11 +7,7 @@ import org.openjdk.jmh.annotations.Level;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.TearDown;
 
-import java.util.List;
-
 public class Hibernate_UpdateBenchmark extends HibernateBenchmark implements UpdateBenchmark {
-
-    List<User> users;
 
     @Setup
     public void populateDatabase() {
@@ -19,8 +15,6 @@ public class Hibernate_UpdateBenchmark extends HibernateBenchmark implements Upd
         session.createQuery("delete from User").executeUpdate();
         session.getTransaction().commit();
         performBatchInsert(NUMBER_OF_ROWS_IN_DB);
-        users = getUsers();
-        session.clear();
     }
 
     @TearDown(Level.Invocation)
@@ -54,19 +48,16 @@ public class Hibernate_UpdateBenchmark extends HibernateBenchmark implements Upd
 
     private void performBatchUpdate(int rowsToUpdate) {
         session.getTransaction().begin();
-
-        for (int i = 0; i < rowsToUpdate; i++) {
-
-            if (i > 0 && i % BATCH_SIZE == 0) {
+        for (int i = 1; i <= rowsToUpdate; i++) {
+            if ( i % BATCH_SIZE == 0) {
                 session.flush();
                 session.clear();
 
                 session.getTransaction().commit();
                 session.getTransaction().begin();
             }
-            User user = users.get(i);
+            User user = session.get(User.class, i);
             user.update();
-            session.update(user);
         }
         session.getTransaction().commit();
     }

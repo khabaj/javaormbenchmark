@@ -5,6 +5,7 @@ import com.khabaj.ormbenchmark.benchmarks.entities.User;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpringData_UpdateBenchmark extends SpringData_Benchmark implements UpdateBenchmark {
@@ -44,10 +45,18 @@ public class SpringData_UpdateBenchmark extends SpringData_Benchmark implements 
 
     private void performBatchUpdate(int rowsToUpdate) {
 
+        List<User> usersToUpdate = new ArrayList<>();
         for (int i = 0; i < rowsToUpdate; i++) {
+
+            if (i > 0 && i % BATCH_SIZE == 0) {
+                userRepository.save(usersToUpdate);
+                usersToUpdate.clear();
+            }
+
             User user = users.get(i);
             user.update();
-            userRepository.save(user);
+            usersToUpdate.add(user);
         }
+        userRepository.save(usersToUpdate);
     }
 }

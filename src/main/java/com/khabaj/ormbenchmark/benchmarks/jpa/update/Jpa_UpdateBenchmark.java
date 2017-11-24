@@ -18,8 +18,6 @@ public abstract class Jpa_UpdateBenchmark extends JpaBenchmark implements Update
         entityManager.createQuery("delete from User").executeUpdate();
         entityManager.getTransaction().commit();
         performBatchInsert(NUMBER_OF_ROWS_IN_DB);
-        users = getUsers();
-        entityManager.clear();
     }
 
     @Override
@@ -49,15 +47,15 @@ public abstract class Jpa_UpdateBenchmark extends JpaBenchmark implements Update
     private void performBatchUpdate(int rowsToUpdate) {
 
         entityManager.getTransaction().begin();
-        for (int i = 0; i < rowsToUpdate; i++) {
-            if (i > 0 && i % BATCH_SIZE == 0) {
+        for (int i = 1; i <= rowsToUpdate; i++) {
+            if (i % BATCH_SIZE == 0) {
                 entityManager.flush();
                 entityManager.clear();
 
                 entityManager.getTransaction().commit();
                 entityManager.getTransaction().begin();
             }
-            User user = users.get(i);
+            User user = entityManager.getReference(User.class, i);
             user.update();
             entityManager.merge(user);
         }

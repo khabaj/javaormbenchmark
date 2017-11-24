@@ -50,6 +50,9 @@ public abstract class JpaBenchmark extends BaseBenchmark{
             if (i > 0 && i % BATCH_SIZE == 0) {
                 entityManager.flush();
                 entityManager.clear();
+
+                entityManager.getTransaction().commit();
+                entityManager.getTransaction().begin();
             }
             entityManager.persist(new User("John" + i, "LastName" + i));
         }
