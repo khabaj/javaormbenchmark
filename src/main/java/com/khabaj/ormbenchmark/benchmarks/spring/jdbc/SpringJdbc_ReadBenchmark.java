@@ -1,4 +1,4 @@
-package com.khabaj.ormbenchmark.benchmarks.spring.jdbctemplate;
+package com.khabaj.ormbenchmark.benchmarks.spring.jdbc;
 
 import com.khabaj.ormbenchmark.benchmarks.ReadBenchmark;
 import com.khabaj.ormbenchmark.benchmarks.entities.User;
