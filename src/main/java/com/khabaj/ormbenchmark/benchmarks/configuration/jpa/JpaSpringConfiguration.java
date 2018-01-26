@@ -49,6 +49,9 @@ public class JpaSpringConfiguration {
                 jpaPropertyMap.put(PersistenceUnitProperties.WEAVING, "false");
                 jpaPropertyMap.put(PersistenceUnitProperties.BATCH_WRITING, "jdbc");
                 jpaPropertyMap.put(PersistenceUnitProperties.BATCH_WRITING_SIZE, BATCH_SIZE);
+                jpaPropertyMap.put("eclipselink.cache.shared.default", "false");
+                //jpaPropertyMap.put("eclipselink.logging.parameters", "true");
+                //jpaPropertyMap.put("eclipselink.logging.level.sql", "FINE");
 
                 break;
             case OPENJPA:
@@ -56,7 +59,7 @@ public class JpaSpringConfiguration {
                 jpaPropertyMap.put("openjpa.RuntimeUnenhancedClasses", "unsupported");
                 jpaPropertyMap.put("openjpa.DynamicEnhancementAgent", "true");
                 jpaPropertyMap.put("javax.persistence.schema-generation.database.action", "drop-and-create");
-                jpaPropertyMap.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true,schemaAction='add')");
+                jpaPropertyMap.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true,schemaAction='drop,add')");
                 jpaPropertyMap.put("openjpa.jdbc.SchemaFactory", "native(foreignKeys=true)");
                 jpaPropertyMap.put("openjpa.jdbc.MappingDefaults", "ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict");
                 jpaPropertyMap.put("openjpa.jdbc.DBDictionary", "batchLimit=" + BATCH_SIZE );

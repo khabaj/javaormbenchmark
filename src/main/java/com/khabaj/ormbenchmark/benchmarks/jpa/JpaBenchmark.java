@@ -56,6 +56,8 @@ public abstract class JpaBenchmark extends BaseBenchmark{
             }
             entityManager.persist(new User("John" + i, "LastName" + i));
         }
+        entityManager.flush();
+        entityManager.clear();
         entityManager.getTransaction().commit();
     }
 

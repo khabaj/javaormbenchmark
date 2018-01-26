@@ -27,18 +27,6 @@ public class SpringData_UpdateBenchmark extends SpringData_Benchmark implements 
 
     @Override
     @Benchmark
-    public void update100Entities() {
-        performBatchUpdate(100);
-    }
-
-    @Override
-    @Benchmark
-    public void update1000Entities() {
-        performBatchUpdate(1000);
-    }
-
-    @Override
-    @Benchmark
     public void update10000Entities() {
         performBatchUpdate(10000);
     }

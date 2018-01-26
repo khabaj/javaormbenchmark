@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 import java.util.Random;
 
-public class SpringJdbcTemplate_ReadBenchmark extends SpringJdbcTemplate_Benchmark implements ReadBenchmark {
+public class SpringJdbc_ReadBenchmark extends SpringJdbc_Benchmark implements ReadBenchmark {
 
     int wantedUserId;
     Blackhole blackhole;

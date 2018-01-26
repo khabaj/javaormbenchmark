@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Timestamp;
 
-public class SpringJdbcTemplate_CreateBenchmark extends SpringJdbcTemplate_Benchmark implements CreateBenchmark {
+public class SpringJdbc_CreateBenchmark extends SpringJdbc_Benchmark implements CreateBenchmark {
 
     @TearDown(Level.Invocation)
     public void clearAfterEveryInvocation() {
@@ -23,18 +23,6 @@ public class SpringJdbcTemplate_CreateBenchmark extends SpringJdbcTemplate_Bench
     public void insert1Entity() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update(JdbcUtils.INSERT_USER_SQL, 1, "FirstName1", "LastName1", new Timestamp(System.currentTimeMillis()));
-    }
-
-    @Benchmark
-    @Override
-    public void insert100Entities() {
-        batchInsertUsers(100);
-    }
-
-    @Benchmark
-    @Override
-    public void insert1000Entities() {
-        batchInsertUsers(1000);
     }
 
     @Benchmark

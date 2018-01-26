@@ -11,7 +11,6 @@ import javafx.scene.control.TextArea;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -43,8 +42,8 @@ public class BenchmarkTabCtrl implements Initializable{
             }
         };
 
-        System.setOut(new PrintStream(out, true));
-        System.setErr(new PrintStream(out, true));
+        //System.setOut(new PrintStream(out, true));
+        //System.setErr(new PrintStream(out, true));
     }
 
     @FXML

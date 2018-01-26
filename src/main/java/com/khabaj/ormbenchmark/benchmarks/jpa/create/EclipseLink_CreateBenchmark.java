@@ -1,8 +1,8 @@
-package com.khabaj.ormbenchmark.benchmarks.jpa.read;
+package com.khabaj.ormbenchmark.benchmarks.jpa.create;
 
 import com.khabaj.ormbenchmark.benchmarks.configuration.jpa.JpaVendor;
 
-public class EclipseLinkJpa_ReadBenchmark extends Jpa_ReadBenchmark {
+public class EclipseLink_CreateBenchmark extends Jpa_CreateBenchmark {
 
     @Override
     public void setUp() {

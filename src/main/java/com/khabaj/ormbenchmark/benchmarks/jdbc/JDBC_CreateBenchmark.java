@@ -25,9 +25,8 @@ public class JDBC_CreateBenchmark extends JdbcBenchmark implements CreateBenchma
     @Benchmark
     @Override
     public void insert1Entity() {
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(JdbcUtils.INSERT_USER_SQL);
+
+        try (PreparedStatement statement = connection.prepareStatement(JdbcUtils.INSERT_USER_SQL);) {
             statement.setInt(1, 1);
             statement.setString(2, "FirstName" + 1);
             statement.setString(3, "LastName" + 1);
@@ -35,21 +34,7 @@ public class JDBC_CreateBenchmark extends JdbcBenchmark implements CreateBenchma
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            JdbcUtils.closeStatement(statement);
         }
-    }
-
-    @Benchmark
-    @Override
-    public void insert100Entities() {
-        JdbcUtils.performBatchUsersInsert(connection, 100, BATCH_SIZE);
-    }
-
-    @Benchmark
-    @Override
-    public void insert1000Entities() {
-        JdbcUtils.performBatchUsersInsert(connection, 1000, BATCH_SIZE);
     }
 
     @Benchmark

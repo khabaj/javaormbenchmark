@@ -1,8 +1,8 @@
-package com.khabaj.ormbenchmark.benchmarks.jpa.update;
+package com.khabaj.ormbenchmark.benchmarks.jpa.delete;
 
 import com.khabaj.ormbenchmark.benchmarks.configuration.jpa.JpaVendor;
 
-public class HibernateJpa_UpdateBenchmark extends Jpa_UpdateBenchmark {
+public class Hibernate_DeleteBenchmark extends Jpa_DeleteBenchmark {
 
     @Override
     public void setUp() {

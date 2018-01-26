@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import java.sql.Timestamp;
 import java.sql.Types;
 
-public abstract class SpringJdbcTemplate_Benchmark extends BaseBenchmark {
+public abstract class SpringJdbc_Benchmark extends BaseBenchmark {
 
     ConfigurableApplicationContext applicationContext;
     DataSource dataSource;

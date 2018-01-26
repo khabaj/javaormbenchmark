@@ -23,14 +23,14 @@ public class JdbcUtils {
                     " FOREIGN KEY (userId) REFERENCES user_table(id))";
 
     public final static String CREATE_INDEX_SQL = "CREATE INDEX lastNameIndex ON " + USER_TABLE + " (lastName)";
-    public final static String INSERT_USER_SQL = "INSERT INTO " + USER_TABLE + " (id, firstName, lastName, updateDate) VALUES (?,?,?,?)";
+    public final static String INSERT_USER_SQL = "INSERT INTO " + USER_TABLE + " (id, firstName, lastName, updatedate) VALUES (?,?,?,?)";
     public final static String INSERT_PHONE_SQL = "INSERT INTO " + PHONE_TABLE + " (id, phoneNumber, userId) VALUES (?,?,?)";
     public final static String DROP_USER_TABLE_SQL = "DROP TABLE " + USER_TABLE;
     public final static String DROP_PHONE_TABLE_SQL = "DROP TABLE " + PHONE_TABLE;
     public final static String DELETE_ALL_FROM_USER_TABLE_SQL = "DELETE FROM " + USER_TABLE;
     public final static String DELETE_ALL_FROM_PHONE_TABLE_SQL = "DELETE FROM " + PHONE_TABLE;
 
-    public final static String UPDATE_USER_TABLE_SQL = "UPDATE " + USER_TABLE + " SET updateDate = ? WHERE id = ?";
+    public final static String UPDATE_USER_TABLE_SQL = "UPDATE " + USER_TABLE + " SET updatedate = ? WHERE id = ?";
 
     public static void closeStatement(Statement statement) {
         try {
@@ -132,7 +132,7 @@ public class JdbcUtils {
 
         try {
             statement = connection.prepareStatement(INSERT_USER_SQL);
-
+            connection.setAutoCommit(false);
             for (int i = 1; i <=rowsNumber; i++) {
 
                 if (i % batchSize == 0) {
@@ -145,6 +145,7 @@ public class JdbcUtils {
                 statement.addBatch();
             }
             statement.executeBatch();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -156,6 +157,7 @@ public class JdbcUtils {
         PreparedStatement statement = null;
 
         try {
+            connection.setAutoCommit(false);
             statement = connection.prepareStatement(UPDATE_USER_TABLE_SQL);
 
             for (int i = 1; i <= rowsToUpdate; i++) {
@@ -167,6 +169,7 @@ public class JdbcUtils {
                 statement.addBatch();
             }
             statement.executeBatch();
+            connection.commit();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

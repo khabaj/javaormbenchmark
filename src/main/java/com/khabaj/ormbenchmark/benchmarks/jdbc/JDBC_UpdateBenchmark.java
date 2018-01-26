@@ -4,6 +4,10 @@ import com.khabaj.ormbenchmark.benchmarks.UpdateBenchmark;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Setup;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
 public class JDBC_UpdateBenchmark extends JdbcBenchmark implements UpdateBenchmark {
 
     @Setup
@@ -15,19 +19,13 @@ public class JDBC_UpdateBenchmark extends JdbcBenchmark implements UpdateBenchma
     @Benchmark
     @Override
     public void update1Entity() {
-        JdbcUtils.performBatchUsersUpdate(connection, 1, BATCH_SIZE);
-    }
-
-    @Benchmark
-    @Override
-    public void update100Entities() {
-        JdbcUtils.performBatchUsersUpdate(connection, 100, BATCH_SIZE);
-    }
-
-    @Benchmark
-    @Override
-    public void update1000Entities() {
-        JdbcUtils.performBatchUsersUpdate(connection, 1000, BATCH_SIZE);
+        try (PreparedStatement statement = connection.prepareStatement(JdbcUtils.UPDATE_USER_TABLE_SQL)) {
+            statement.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+            statement.setInt(2, 5);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Benchmark

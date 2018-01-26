@@ -30,21 +30,19 @@ public class JDBC_DeleteBenchmark extends JdbcBenchmark implements DeleteBenchma
     @Benchmark
     @Override
     public void delete1Entity() {
-        performBatchUsersDelete(connection, 1, BATCH_SIZE);
+        PreparedStatement statement = null;
+        try {
+            String updateSQL = "DELETE FROM " + JdbcUtils.USER_TABLE + " WHERE id = ?";
+            statement = connection.prepareStatement(updateSQL);
+            statement.setInt(1, entitiesCount);
+            entitiesCount--;
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JdbcUtils.closeStatement(statement);
+        }
     }
-
-    @Benchmark
-    @Override
-    public void delete100Entities() {
-        performBatchUsersDelete(connection, 100, BATCH_SIZE);
-    }
-
-    @Benchmark
-    @Override
-    public void delete1000Entities() {
-        performBatchUsersDelete(connection, 1000, BATCH_SIZE);
-    }
-
     @Benchmark
     @Override
     public void delete10000Entities() {

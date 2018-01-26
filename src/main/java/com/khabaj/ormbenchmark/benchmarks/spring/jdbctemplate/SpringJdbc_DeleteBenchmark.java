@@ -10,7 +10,7 @@ import org.springframework.jdbc.object.BatchSqlUpdate;
 
 import java.sql.Types;
 
-public class SpringJdbcTemplate_DeleteBenchmark extends SpringJdbcTemplate_Benchmark implements DeleteBenchmark {
+public class SpringJdbc_DeleteBenchmark extends SpringJdbc_Benchmark implements DeleteBenchmark {
     int entitiesCount = 0;
 
     @Setup
@@ -30,18 +30,6 @@ public class SpringJdbcTemplate_DeleteBenchmark extends SpringJdbcTemplate_Bench
     @Override
     public void delete1Entity() {
         batchDeleteUsers(1);
-    }
-
-    @Benchmark
-    @Override
-    public void delete100Entities() {
-        batchDeleteUsers(100);
-    }
-
-    @Benchmark
-    @Override
-    public void delete1000Entities() {
-        batchDeleteUsers(1000);
     }
 
     @Benchmark

@@ -51,7 +51,7 @@ public class SpringData_ReadBenchmark extends SpringData_Benchmark implements Re
     @Benchmark
     @Override
     public void findByIndexedStringColumn() {
-        List users = userRepository.findByLastName("LastName" + wantedUserId);
+        List<User> users = userRepository.findByLastName("LastName" + wantedUserId);
         blackhole.consume(users);
     }
 
