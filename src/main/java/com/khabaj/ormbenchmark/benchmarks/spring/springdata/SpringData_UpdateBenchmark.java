@@ -13,6 +13,12 @@ public class SpringData_UpdateBenchmark extends SpringData_Benchmark implements 
     List<User> users;
 
     @Setup
+    @Override
+    public void setUp() {
+        super.setUp();
+    }
+
+    @Setup
     public void populateDatabase() {
         userRepository.deleteAll();
         batchInsertUsers(NUMBER_OF_ROWS_IN_DB);

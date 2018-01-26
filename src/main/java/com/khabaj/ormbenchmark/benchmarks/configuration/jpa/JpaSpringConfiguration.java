@@ -28,9 +28,7 @@ public class JpaSpringConfiguration {
 
     @Lazy
     @Bean(name = "entityManagerFactory")
-    public EntityManagerFactory entityManagerFactory(JpaVendor jpaVendor) {
-
-        final String BATCH_SIZE = "100";
+    public EntityManagerFactory entityManagerFactory(JpaVendor jpaVendor, Integer batchSize) {
 
         JpaVendorAdapter jpaVendorAdapter;
         Map<String, Object> jpaPropertyMap = new HashMap<>();
@@ -39,7 +37,7 @@ public class JpaSpringConfiguration {
         switch (jpaVendor) {
             case HIBERNATE:
                 jpaVendorAdapter = new HibernateJpaVendorAdapter();
-                jpaPropertyMap.put(AvailableSettings.STATEMENT_BATCH_SIZE, BATCH_SIZE);
+                jpaPropertyMap.put(AvailableSettings.STATEMENT_BATCH_SIZE, Integer.toString(batchSize));
                 jpaPropertyMap.put(AvailableSettings.ORDER_INSERTS, "true");
                 jpaPropertyMap.put(AvailableSettings.ORDER_UPDATES, "true");
                 jpaPropertyMap.put(AvailableSettings.BATCH_VERSIONED_DATA, "true");
@@ -48,7 +46,7 @@ public class JpaSpringConfiguration {
                 jpaVendorAdapter = new EclipseLinkJpaVendorAdapter();
                 jpaPropertyMap.put(PersistenceUnitProperties.WEAVING, "false");
                 jpaPropertyMap.put(PersistenceUnitProperties.BATCH_WRITING, "jdbc");
-                jpaPropertyMap.put(PersistenceUnitProperties.BATCH_WRITING_SIZE, BATCH_SIZE);
+                jpaPropertyMap.put(PersistenceUnitProperties.BATCH_WRITING_SIZE, Integer.toString(batchSize));
                 jpaPropertyMap.put("eclipselink.cache.shared.default", "false");
                 //jpaPropertyMap.put("eclipselink.logging.parameters", "true");
                 //jpaPropertyMap.put("eclipselink.logging.level.sql", "FINE");
@@ -62,7 +60,7 @@ public class JpaSpringConfiguration {
                 jpaPropertyMap.put("openjpa.jdbc.SynchronizeMappings", "buildSchema(foreignKeys=true,schemaAction='drop,add')");
                 jpaPropertyMap.put("openjpa.jdbc.SchemaFactory", "native(foreignKeys=true)");
                 jpaPropertyMap.put("openjpa.jdbc.MappingDefaults", "ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict");
-                jpaPropertyMap.put("openjpa.jdbc.DBDictionary", "batchLimit=" + BATCH_SIZE );
+                jpaPropertyMap.put("openjpa.jdbc.DBDictionary", "batchLimit=" + Integer.toString(batchSize ));
                 break;
             default:
                 jpaVendorAdapter = new HibernateJpaVendorAdapter();

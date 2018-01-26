@@ -146,6 +146,7 @@ public class JdbcUtils {
             }
             statement.executeBatch();
             connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -170,6 +171,7 @@ public class JdbcUtils {
             }
             statement.executeBatch();
             connection.commit();
+            connection.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

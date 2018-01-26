@@ -14,6 +14,12 @@ public class SpringData_DeleteBenchmark extends SpringData_Benchmark implements 
     List<User> users;
     int entitiesCount = 0;
 
+    @Setup
+    @Override
+    public void setUp() {
+        super.setUp();
+    }
+
     @Setup(Level.Invocation)
     public void populateDatabase() {
         if (entitiesCount < 1) {

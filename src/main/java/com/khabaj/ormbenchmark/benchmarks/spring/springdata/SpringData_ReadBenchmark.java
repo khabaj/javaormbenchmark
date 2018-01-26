@@ -16,6 +16,12 @@ public class SpringData_ReadBenchmark extends SpringData_Benchmark implements Re
     Blackhole blackhole;
 
     @Setup
+    @Override
+    public void setUp() {
+        super.setUp();
+    }
+
+    @Setup
     public void prepare(Blackhole blackhole) {
         this.blackhole = blackhole;
         userRepository.deleteAll();

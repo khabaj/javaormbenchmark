@@ -19,9 +19,13 @@ public abstract class JpaBenchmark extends BaseBenchmark{
     protected EntityManager entityManager;
 
     public void init(JpaVendor jpaVendor) {
+        this.init(jpaVendor, BATCH_SIZE);
+    }
+
+    public void init(JpaVendor jpaVendor, int batchSize) {
         try {
             this.applicationContext = new AnnotationConfigApplicationContext(JpaSpringConfiguration.class);
-            this.entityManager = applicationContext.getBean(EntityManagerFactory.class, jpaVendor).createEntityManager();
+            this.entityManager = applicationContext.getBean(EntityManagerFactory.class, jpaVendor, batchSize).createEntityManager();
         } catch (Exception e) {
             if (applicationContext != null) {
                 applicationContext.close();
@@ -45,9 +49,13 @@ public abstract class JpaBenchmark extends BaseBenchmark{
     public abstract void setUp();
 
     public void performBatchInsert(int rowsNumber) {
+        performBatchInsert(rowsNumber, BATCH_SIZE);
+    }
+
+    public void performBatchInsert(int rowsNumber, int batchSize) {
         entityManager.getTransaction().begin();
         for (int i = 0; i < rowsNumber; i++) {
-            if (i > 0 && i % BATCH_SIZE == 0) {
+            if (i > 0 && i % batchSize == 0) {
                 entityManager.flush();
                 entityManager.clear();
 
