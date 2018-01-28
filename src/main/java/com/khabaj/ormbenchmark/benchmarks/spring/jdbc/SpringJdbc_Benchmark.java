@@ -57,6 +57,10 @@ public abstract class SpringJdbc_Benchmark extends BaseBenchmark {
     }
 
     protected void batchInsertUsers(int rowsNumber) {
+        batchInsertUsers(rowsNumber, BATCH_SIZE);
+    }
+
+    protected void batchInsertUsers(int rowsNumber, int batchSize) {
 
         BatchSqlUpdate batch = new BatchSqlUpdate();
         batch.setDataSource(dataSource);
@@ -65,7 +69,7 @@ public abstract class SpringJdbc_Benchmark extends BaseBenchmark {
         batch.declareParameter(new SqlParameterValue(Types.VARCHAR, "firstName"));
         batch.declareParameter(new SqlParameterValue(Types.VARCHAR, "lastDate"));
         batch.declareParameter(new SqlParameterValue(Types.TIMESTAMP, "updateDate"));
-        batch.setBatchSize(BATCH_SIZE);
+        batch.setBatchSize(batchSize);
 
         for (int i = 1; i <= rowsNumber; i++) {
             batch.update(i, "FirstName" + i, "LastName" + i, new Timestamp(System.currentTimeMillis()));

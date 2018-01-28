@@ -16,9 +16,9 @@ public class SpringData_UpdateBenchmark extends SpringData_Benchmark implements 
     @Override
     public void setUp() {
         super.setUp();
+        populateDatabase();
     }
 
-    @Setup
     public void populateDatabase() {
         userRepository.deleteAll();
         batchInsertUsers(NUMBER_OF_ROWS_IN_DB);

@@ -36,8 +36,8 @@ public class DataSourcesPanelCtrl implements Initializable {
         jdbcDriverColumn.setCellValueFactory(param -> param.getValue().getValue().jdbcDriverProperty());
 
         dataSourceService = DataSourceService.getInstance();
-        dataSourceService.addDataSource(new DataSource("MySQL", "jdbc:mysql://localhost:3306/ormbenchmarkdb?createDatabaseIfNotExist=true&rewriteBatchedStatements=true","root", JDBCDriver.MYSQL));
-        dataSourceService.addDataSource(new DataSource("H2 (In-memory)", "jdbc:h2:file:./ormbenchmarkdb", JDBCDriver.H2));
+        //dataSourceService.addDataSource(new DataSource("MySQL", "jdbc:mysql://localhost:3306/ormbenchmarkdb?createDatabaseIfNotExist=true&rewriteBatchedStatements=true","root", JDBCDriver.MYSQL));
+        dataSourceService.addDataSource(new DataSource("H2 (In-memory)", "jdbc:h2:tcp://localhost/~/persistenceTest", "sa", "",  JDBCDriver.H2));
         dataSourceService.addDataSource(new DataSource("PostgreSQL", "jdbc:postgresql://localhost/java-persistence-benchmark","postgres", "root", JDBCDriver.POSTGRESQL));
 
         TreeItem<DataSource> root = new RecursiveTreeItem<>(dataSourceService.getDataSources(), RecursiveTreeObject::getChildren);
