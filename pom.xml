@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.khabaj</groupId>
-    <artifactId>java-orm-benchmark</artifactId>
+    <artifactId>java-persistence-benchmark</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Java ORM benchmark</name>
+    <name>JavaPersistenceBenchmark</name>
 
     <dependencies>
         <dependency>
